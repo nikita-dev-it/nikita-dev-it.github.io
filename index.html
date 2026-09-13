@@ -1,461 +1,1116 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nikita Bocharov — Full-Stack Developer</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Full-Stack Developer — Portfolio</title>
+<meta name="description" content="Разработка под ключ: Python, React, WordPress, парсинг, боты, AI, серверы и базы данных." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --bg2: #12121a;
-    --card: #16161f;
-    --border: #262633;
-    --text: #e8e8ee;
-    --muted: #8b8b9a;
-    --accent: #7c5cff;
-    --accent2: #00d9a3;
-    --grad: linear-gradient(135deg, #7c5cff 0%, #00d9a3 100%);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+:root{
+  --bg:#0a0a0f; --bg-alt:#0f0f16; --card:#14141d; --card-2:#1a1a24;
+  --border:#23232f; --border-hi:#2f2f3d;
+  --text:#eaeaf0; --muted:#8a8a9c; --muted-2:#63637a;
+  --accent:#7c5cff; --accent-2:#22d3ee; --accent-3:#f472b6;
+  --radius:14px; --radius-sm:10px; --container:1200px;
+  --shadow:0 20px 50px -20px rgba(0,0,0,.6);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.no-scroll{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img{max-width:100%;display:block}
+.container{max-width:var(--container);margin:0 auto;padding:0 24px}
 
-  /* Header */
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(10,10,15,.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 24px; max-width: 1100px; margin: 0 auto;
-  }
-  .logo {
-    font-weight: 700; font-size: 18px;
-    background: var(--grad); -webkit-background-clip: text;
-    background-clip: text; color: transparent;
-  }
-  .nav-links { display: flex; gap: 28px; align-items: center; }
-  .nav-links a {
-    color: var(--muted); text-decoration: none; font-size: 14px;
-    transition: color .2s;
-  }
-  .nav-links a:hover { color: var(--text); }
-  .lang-switch {
-    display: flex; gap: 4px; background: var(--card);
-    border: 1px solid var(--border); border-radius: 8px; padding: 3px;
-  }
-  .lang-switch button {
-    background: none; border: none; color: var(--muted);
-    padding: 5px 12px; border-radius: 6px; cursor: pointer;
-    font-size: 12px; font-weight: 600; transition: all .2s;
-  }
-  .lang-switch button.active {
-    background: var(--accent); color: #fff;
-  }
-  @media (max-width: 720px) {
-    .nav-links a { display: none; }
-  }
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal.d1{transition-delay:.05s}.reveal.d2{transition-delay:.1s}.reveal.d3{transition-delay:.15s}.reveal.d4{transition-delay:.2s}.reveal.d5{transition-delay:.25s}
 
-  /* Hero */
-  .hero {
-    min-height: 100vh; display: flex; align-items: center;
-    padding: 120px 0 80px; position: relative;
-  }
-  .hero::before {
-    content: ''; position: absolute; top: 20%; left: 50%;
-    transform: translateX(-50%);
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(124,92,255,.15) 0%, transparent 70%);
-    pointer-events: none; filter: blur(60px);
-  }
-  .hero-inner { position: relative; z-index: 1; }
-  .badge {
-    display: inline-block; padding: 6px 14px;
-    background: rgba(124,92,255,.12); border: 1px solid rgba(124,92,255,.3);
-    border-radius: 100px; font-size: 13px; color: var(--accent);
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(36px, 6vw, 64px);
-    line-height: 1.1; font-weight: 800; margin-bottom: 20px;
-  }
-  .hero h1 .grad {
-    background: var(--grad); -webkit-background-clip: text;
-    background-clip: text; color: transparent;
-  }
-  .hero p.lead {
-    font-size: clamp(16px, 2vw, 20px); color: var(--muted);
-    max-width: 640px; margin-bottom: 36px;
-  }
-  .cta { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn {
-    display: inline-block; padding: 14px 28px; border-radius: 10px;
-    text-decoration: none; font-weight: 600; font-size: 15px;
-    transition: transform .2s, opacity .2s; cursor: pointer; border: none;
-  }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { transform: translateY(-2px); opacity: .9; }
-  .btn-ghost {
-    background: transparent; color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+/* Header */
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:all .3s ease}
+.header.scrolled{padding:10px 0;background:rgba(10,10,15,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.header__inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:1.2px;font-size:14px}
+.logo__dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 0 16px var(--accent)}
+.nav{display:flex;gap:2px}
+.nav__link{padding:9px 14px;font-size:13.5px;color:var(--muted);border-radius:8px;transition:all .2s;font-weight:500}
+.nav__link:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.header__actions{display:flex;gap:10px;align-items:center}
+.lang-btn{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:10px;font-size:12.5px;font-weight:700;letter-spacing:1px;transition:all .2s;color:var(--muted)}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent)}
+.burger{display:none;font-size:18px;padding:8px;color:var(--text)}
 
-  /* Sections */
-  section { padding: 90px 0; }
-  .section-title {
-    font-size: clamp(26px, 4vw, 38px); font-weight: 800;
-    margin-bottom: 12px;
-  }
-  .section-sub {
-    color: var(--muted); margin-bottom: 48px; font-size: 16px;
-  }
+/* Hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:130px 0 80px;overflow:hidden}
+.hero__glow{position:absolute;border-radius:50%;filter:blur(130px);opacity:.32;pointer-events:none;z-index:0}
+.hero__glow--1{width:520px;height:520px;background:var(--accent);top:-120px;left:-180px}
+.hero__glow--2{width:520px;height:520px;background:var(--accent-2);bottom:-180px;right:-180px;opacity:.22}
+.hero__inner{position:relative;z-index:2;text-align:center}
+.hero__badge{display:inline-flex;align-items:center;gap:9px;padding:9px 18px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:12.5px;color:var(--muted);margin-bottom:26px;font-weight:500;letter-spacing:.3px}
+.hero__badge i{color:var(--accent-2)}
+.hero__title{font-size:clamp(30px,5.4vw,64px);line-height:1.08;font-weight:900;letter-spacing:-1.4px;background:linear-gradient(135deg,#fff 25%,var(--accent) 65%,var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;max-width:960px;margin:0 auto 26px}
+.hero__subtitle{font-size:clamp(15px,1.55vw,18px);color:var(--muted);max-width:760px;margin:0 auto 40px;line-height:1.7}
+.hero__cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:12px;font-size:14.5px;font-weight:600;transition:all .25s ease;letter-spacing:.2px}
+.btn--primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 14px 34px -12px var(--accent)}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px -12px var(--accent)}
+.btn--ghost{border:1px solid var(--border);color:var(--text)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn i{font-size:13px}
+.hero__stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:80px;max-width:820px;margin-left:auto;margin-right:auto}
+.stat{padding:22px 12px;border-radius:var(--radius);border:1px solid var(--border);background:rgba(255,255,255,.02);transition:border-color .25s}
+.stat:hover{border-color:var(--border-hi)}
+.stat__value{font-size:30px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px}
+.stat__label{font-size:12.5px;color:var(--muted);margin-top:5px;font-weight:500}
 
-  /* Stats */
-  .stats {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 20px; margin-top: 60px;
-  }
-  .stat {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 24px;
-  }
-  .stat .num {
-    font-size: 34px; font-weight: 800;
-    background: var(--grad); -webkit-background-clip: text;
-    background-clip: text; color: transparent;
-  }
-  .stat .label { color: var(--muted); font-size: 14px; margin-top: 4px; }
+/* Sections */
+.section{padding:110px 0;position:relative}
+.section--alt{background:var(--bg-alt)}
+.section__title{font-size:clamp(26px,3.5vw,42px);font-weight:900;letter-spacing:-1px;margin-bottom:14px;text-align:center;line-height:1.15}
+.section__subtitle{text-align:center;color:var(--muted);max-width:720px;margin:0 auto 60px;font-size:15.5px;line-height:1.7}
+.tag{display:inline-block;padding:7px 16px;border-radius:999px;font-size:11.5px;font-weight:800;letter-spacing:1.8px;background:rgba(124,92,255,.12);color:var(--accent);border:1px solid rgba(124,92,255,.28);margin-bottom:18px;text-transform:uppercase}
 
-  /* Skills */
-  .skills-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-  }
-  .skill-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 26px;
-    transition: border-color .25s, transform .25s;
-  }
-  .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
-  .skill-card h3 {
-    font-size: 17px; margin-bottom: 14px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .skill-card h3 .dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--accent2);
-  }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag {
-    font-size: 13px; padding: 4px 10px; border-radius: 6px;
-    background: rgba(124,92,255,.1); color: #b8a6ff;
-    border: 1px solid rgba(124,92,255,.2);
-  }
+/* About */
+.about{display:grid;grid-template-columns:1.35fr 1fr;gap:50px;align-items:start}
+.about__text p{color:var(--muted);margin-bottom:16px;font-size:15.5px;line-height:1.75}
+.about__lead{color:var(--text)!important;font-size:18px!important;font-weight:500;line-height:1.6!important}
+.about__points{list-style:none;display:flex;flex-direction:column;gap:12px}
+.about__points li{display:flex;align-items:center;gap:14px;padding:15px 18px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);font-size:14.5px;font-weight:500}
+.about__points i{color:var(--accent-2);flex-shrink:0;font-size:14px}
 
-  /* Projects */
-  .projects {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-  }
-  .project {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; padding: 28px;
-    transition: border-color .25s, transform .25s;
-    display: flex; flex-direction: column;
-  }
-  .project:hover { border-color: var(--accent); transform: translateY(-4px); }
-  .project h3 { font-size: 19px; margin-bottom: 10px; }
-  .project p { color: var(--muted); font-size: 15px; margin-bottom: 18px; flex: 1; }
-  .project .tags { margin-bottom: 20px; }
-  .project .links { display: flex; gap: 16px; }
-  .project .links a {
-    color: var(--accent); text-decoration: none; font-size: 14px;
-    font-weight: 600;
-  }
-  .project .links a:hover { text-decoration: underline; }
+/* Skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:22px}
+.skill-card{padding:28px 26px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);transition:all .35s ease}
+.skill-card:hover{border-color:rgba(124,92,255,.45);transform:translateY(-5px);box-shadow:0 24px 50px -22px rgba(124,92,255,.5)}
+.skill-card__head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.skill-card__icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(34,211,238,.18));color:var(--accent-2);font-size:19px;flex-shrink:0}
+.skill-card__head h3{font-size:16.5px;font-weight:800;letter-spacing:-.3px}
+.skill-card__list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.skill-card__list li{position:relative;padding-left:20px;color:var(--muted);font-size:14px;line-height:1.55}
+.skill-card__list li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
 
-  /* Contact */
-  .contact-box {
-    background: linear-gradient(135deg, rgba(124,92,255,.1), rgba(0,217,163,.05));
-    border: 1px solid var(--border); border-radius: 20px;
-    padding: 60px 40px; text-align: center;
-  }
-  .contact-box h2 { font-size: clamp(24px, 4vw, 34px); margin-bottom: 16px; }
-  .contact-box p { color: var(--muted); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
-  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+/* AI */
+.ai{position:relative;overflow:hidden}
+.ai__glow{position:absolute;width:800px;height:800px;background:radial-gradient(circle,rgba(124,92,255,.22),transparent 60%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0}
+.ai .container{position:relative;z-index:1}
+.ai__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.ai-card{padding:30px 26px;background:linear-gradient(180deg,rgba(124,92,255,.07),rgba(34,211,238,.035));border:1px solid rgba(124,92,255,.22);border-radius:var(--radius);transition:all .35s ease}
+.ai-card:hover{border-color:var(--accent);transform:translateY(-5px);box-shadow:0 24px 50px -22px rgba(124,92,255,.6)}
+.ai-card__icon{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:22px;margin-bottom:20px;box-shadow:0 16px 32px -16px var(--accent)}
+.ai-card h3{font-size:17px;margin-bottom:10px;font-weight:800;letter-spacing:-.2px}
+.ai-card p{color:var(--muted);font-size:14px;line-height:1.65}
+.ai__note{position:relative;margin-top:52px;padding:34px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap}
+.ai__note p{color:var(--muted);max-width:660px;flex:1;min-width:260px;font-size:15px;line-height:1.7}
 
-  /* Footer */
-  footer {
-    padding: 40px 0; border-top: 1px solid var(--border);
-    text-align: center; color: var(--muted); font-size: 14px;
-  }
+/* Services */
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.service-card{padding:28px 24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s ease}
+.service-card:hover{border-color:rgba(34,211,238,.5);transform:translateY(-5px)}
+.service-card__icon{color:var(--accent-2);font-size:26px;margin-bottom:16px}
+.service-card h3{font-size:15.5px;margin-bottom:8px;font-weight:800;letter-spacing:-.2px}
+.service-card p{color:var(--muted);font-size:13.5px;line-height:1.6}
 
-  /* Animations */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+.process__title{text-align:center;font-size:clamp(20px,2.4vw,28px);margin:90px 0 44px;font-weight:800;letter-spacing:-.5px}
+.process{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.process__step{padding:26px 22px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);position:relative;transition:all .3s}
+.process__step:hover{border-color:rgba(124,92,255,.4);transform:translateY(-4px)}
+.process__num{font-size:30px;font-weight:900;color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;margin-bottom:12px;letter-spacing:-1px}
+.process__step h4{font-size:15px;margin-bottom:6px;font-weight:800}
+.process__step p{color:var(--muted);font-size:13.5px;line-height:1.6}
 
-  [data-en] { display: none; }
-  html[lang="en"] [data-ru] { display: none; }
-  html[lang="en"] [data-en] { display: initial; }
-  html[lang="en"] [data-en].block { display: block; }
+/* Cases */
+.cases-filter{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:44px}
+.filter-btn{padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--border);color:var(--muted);background:transparent;transition:all .25s}
+.filter-btn:hover{color:var(--text);border-color:var(--border-hi)}
+.filter-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;box-shadow:0 10px 26px -12px var(--accent)}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px}
+.case-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .35s ease;display:flex;flex-direction:column;cursor:pointer}
+.case-card:hover{border-color:rgba(124,92,255,.5);transform:translateY(-6px);box-shadow:0 26px 55px -25px rgba(124,92,255,.55)}
+.case-card__img{aspect-ratio:16/10;background:linear-gradient(135deg,#1a1a26,#0f0f18);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border)}
+.case-card__img img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease}
+.case-card:hover .case-card__img img{transform:scale(1.04)}
+.case-card__body{padding:24px;display:flex;flex-direction:column;flex:1;gap:14px}
+.case-card__top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.case-card__type{font-size:10.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;padding:5px 10px;border-radius:6px;background:rgba(124,92,255,.14);color:var(--accent);border:1px solid rgba(124,92,255,.25);white-space:nowrap}
+.case-card__type.shop{background:rgba(34,211,238,.12);color:var(--accent-2);border-color:rgba(34,211,238,.28)}
+.case-card__type.catalog{background:rgba(244,114,182,.12);color:var(--accent-3);border-color:rgba(244,114,182,.28)}
+.case-card__type.landing{background:rgba(250,204,21,.12);color:#facc15;border-color:rgba(250,204,21,.28)}
+.case-card__type.ai{background:rgba(124,92,255,.14);color:var(--accent);border-color:rgba(124,92,255,.3)}
+.case-card__type.bot{background:rgba(34,211,238,.14);color:var(--accent-2);border-color:rgba(34,211,238,.3)}
+.case-card__type.parser{background:rgba(52,211,153,.14);color:#34d399;border-color:rgba(52,211,153,.3)}
+.case-card h3{font-size:17px;font-weight:800;letter-spacing:-.3px;line-height:1.3}
+.case-card__url{font-size:12.5px;color:var(--accent-2);font-weight:600;transition:color .2s;word-break:break-all}
+.case-card__url:hover{color:var(--accent)}
+.case-card__url i{font-size:11px;margin-right:5px}
+.case-card__desc{color:var(--muted);font-size:13.5px;line-height:1.65;flex:1}
+.case-card__tags{display:flex;flex-wrap:wrap;gap:6px;padding-top:14px;border-top:1px solid var(--border);margin-top:auto}
+.case-tag{font-size:11px;padding:4px 9px;border-radius:5px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border);font-weight:500}
+.case-card__more{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:6px;margin-top:-4px}
+.case-card__more i{font-size:10px;transition:transform .3s}
+.case-card:hover .case-card__more i{transform:translateX(4px)}
+
+/* Contact */
+.contact{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:800px;margin:0 auto}
+.contact__link{display:flex;align-items:center;gap:20px;padding:26px 30px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);transition:all .25s ease}
+.contact__link:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 20px 44px -20px var(--accent)}
+.contact__link i:first-child{font-size:30px;width:44px;text-align:center;color:var(--accent-2)}
+.contact__link:hover i:first-child{color:var(--accent)}
+.contact__link-info{display:flex;flex-direction:column;gap:4px}
+.contact__link-title{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+.contact__link-value{font-size:15.5px;font-weight:600;color:var(--text);word-break:break-all}
+
+/* Footer */
+.footer{padding:36px 0;border-top:1px solid var(--border);background:var(--bg)}
+.footer__inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+.footer__tag{color:var(--accent-2);font-weight:600}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.modal.open{display:flex}
+.modal__backdrop{position:fixed;inset:0;background:rgba(5,5,10,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:fadeIn .3s ease}
+.modal__window{position:relative;background:var(--bg-alt);border:1px solid var(--border);border-radius:20px;max-width:960px;width:100%;margin:auto;overflow:hidden;animation:slideUp .4s cubic-bezier(.16,1,.3,1);box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.modal__close{position:absolute;top:18px;right:18px;width:42px;height:42px;border-radius:12px;background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--text);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10}
+.modal__close:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:rotate(90deg)}
+.modal__hero{position:relative;aspect-ratio:16/8;background:linear-gradient(135deg,#1a1a26,#0f0f18);overflow:hidden;border-bottom:1px solid var(--border)}
+.modal__hero img{width:100%;height:100%;object-fit:cover;object-position:top}
+.modal__body{padding:40px 44px 44px}
+.modal__type{display:inline-block;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:6px;background:rgba(124,92,255,.14);color:var(--accent);border:1px solid rgba(124,92,255,.3);margin-bottom:16px}
+.modal__title{font-size:clamp(22px,3vw,32px);font-weight:900;letter-spacing:-.8px;line-height:1.2;margin-bottom:16px}
+.modal__url{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--accent-2);font-weight:600;margin-bottom:24px;word-break:break-all}
+.modal__url:hover{color:var(--accent)}
+.modal__url i{font-size:12px}
+.modal__section{margin-top:28px}
+.modal__section:first-of-type{margin-top:20px}
+.modal__section h4{font-size:13px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.modal__section h4::before{content:'';width:20px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px}
+.modal__section p{color:var(--muted);font-size:14.5px;line-height:1.75;margin-bottom:10px}
+.modal__section ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.modal__section ul li{position:relative;padding-left:22px;color:var(--muted);font-size:14.5px;line-height:1.7}
+.modal__section ul li::before{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:0;top:2px;color:var(--accent-2);font-size:11px}
+.modal__stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.modal__stack span{font-size:12px;padding:6px 12px;border-radius:7px;background:rgba(124,92,255,.1);color:var(--accent);border:1px solid rgba(124,92,255,.25);font-weight:600}
+.modal__stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-top:16px}
+.modal__stat{padding:18px;border-radius:12px;background:var(--card);border:1px solid var(--border);text-align:center}
+.modal__stat-value{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px}
+.modal__stat-label{font-size:11.5px;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* Responsive */
+@media (max-width:960px){
+  .about{grid-template-columns:1fr;gap:30px}
+  .contact{grid-template-columns:1fr;max-width:500px}
+  .hero__stats{grid-template-columns:repeat(2,1fr);margin-top:60px}
+  .section{padding:80px 0}
+  .modal__body{padding:30px 24px 32px}
+  .modal__close{top:12px;right:12px;width:38px;height:38px}
+}
+@media (max-width:760px){
+  .burger{display:inline-flex}
+  .nav{position:fixed;top:0;right:-100%;width:280px;height:100vh;flex-direction:column;padding:96px 24px;background:var(--bg-alt);border-left:1px solid var(--border);transition:right .35s ease;gap:6px;z-index:90}
+  .nav.open{right:0}
+  .nav__link{padding:14px 16px;text-align:left;font-size:15.5px}
+  .section{padding:70px 0}
+  .hero{padding:110px 0 60px}
+  .ai__note{padding:26px}
+  .cases-grid{grid-template-columns:1fr}
+  .modal{padding:20px 12px}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <nav class="nav">
-    <div class="logo">NB</div>
-    <div class="nav-links">
-      <a href="#about" data-ru="Обо мне" data-en="About">Обо мне</a>
-      <a href="#skills" data-ru="Навыки" data-en="Skills">Навыки</a>
-      <a href="#projects" data-ru="Проекты" data-en="Projects">Проекты</a>
-      <a href="#contact" data-ru="Контакты" data-en="Contact">Контакты</a>
-      <div class="lang-switch">
-        <button id="btn-ru" class="active">RU</button>
-        <button id="btn-en">EN</button>
-      </div>
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="#top" class="logo" onclick="scrollTop(event)">
+      <span class="logo__dot"></span>
+      <span>DEV.PORTFOLIO</span>
+    </a>
+    <nav class="nav" id="nav">
+      <a class="nav__link" href="#about" data-ru="Обо мне" data-en="About">Обо мне</a>
+      <a class="nav__link" href="#skills" data-ru="Навыки" data-en="Skills">Навыки</a>
+      <a class="nav__link" href="#ai" data-ru="AI / ML" data-en="AI / ML">AI / ML</a>
+      <a class="nav__link" href="#services" data-ru="Услуги" data-en="Services">Услуги</a>
+      <a class="nav__link" href="#cases" data-ru="Кейсы" data-en="Cases">Кейсы</a>
+      <a class="nav__link" href="#contact" data-ru="Контакты" data-en="Contact">Контакты</a>
+    </nav>
+    <div class="header__actions">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()" title="Switch language">
+        <i class="fa-solid fa-language"></i>
+        <span id="langLabel">RU</span>
+      </button>
+      <button class="burger" onclick="toggleMenu()" aria-label="menu">
+        <i class="fa-solid fa-bars" id="burgerIcon"></i>
+      </button>
     </div>
-  </nav>
+  </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container hero-inner">
-    <span class="badge" data-ru="Открыт для проектов" data-en="Open for projects">Открыт для проектов</span>
-    <h1>
-      <span data-ru="Привет, я " data-en="Hi, I'm ">Привет, я </span>
-      <span class="grad">Nikita Bocharov</span><br>
-      <span data-ru="Full-Stack разработчик" data-en="Full-Stack Developer">Full-Stack разработчик</span>
+<section class="hero" id="top">
+  <div class="hero__glow hero__glow--1"></div>
+  <div class="hero__glow hero__glow--2"></div>
+  <div class="container hero__inner">
+    <div class="hero__badge reveal">
+      <i class="fa-solid fa-rocket"></i>
+      <span data-ru="Full-stack разработчик" data-en="Full-stack developer">Full-stack разработчик</span>
+    </div>
+    <h1 class="hero__title reveal d1"
+      data-ru="Разработка под ключ — от идеи до продакшена"
+      data-en="Turnkey development — from idea to production">
+      Разработка под ключ — от идеи до продакшена
     </h1>
-    <p class="lead"
-       data-ru="Пишу код, который работает быстро, масштабируется и не падает. Превращаю бизнес-задачи в чистые, поддерживаемые решения."
-       data-en="I write code that runs fast, scales well, and never breaks. I turn business problems into clean, maintainable solutions.">
-      Пишу код, который работает быстро, масштабируется и не падает.
+    <p class="hero__subtitle reveal d2"
+      data-ru="Python, React, WordPress, парсинг, боты, AI-интеграции, серверы и базы данных. Беру проект целиком: аналитика, дизайн, код, деплой, поддержка."
+      data-en="Python, React, WordPress, scraping, bots, AI integrations, servers and databases. I take the whole project: analysis, design, code, deploy, support.">
+      Python, React, WordPress, парсинг, боты, AI-интеграции, серверы и базы данных. Беру проект целиком: аналитика, дизайн, код, деплой, поддержка.
     </p>
-    <div class="cta">
-      <a href="#projects" class="btn btn-primary" data-ru="Смотреть проекты" data-en="View Projects">Смотреть проекты</a>
-      <a href="#contact" class="btn btn-ghost" data-ru="Связаться" data-en="Get in touch">Связаться</a>
+    <div class="hero__cta reveal d3">
+      <a href="#contact" class="btn btn--primary">
+        <span data-ru="Обсудить проект" data-en="Discuss a project">Обсудить проект</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      <a href="#cases" class="btn btn--ghost">
+        <span data-ru="Смотреть кейсы" data-en="View cases">Смотреть кейсы</span>
+      </a>
     </div>
+    <div class="hero__stats reveal d4">
+      <div class="stat"><div class="stat__value">7+</div><div class="stat__label" data-ru="лет в разработке" data-en="years in development">лет в разработке</div></div>
+      <div class="stat"><div class="stat__value">150+</div><div class="stat__label" data-ru="проектов сдано" data-en="projects delivered">проектов сдано</div></div>
+      <div class="stat"><div class="stat__value">8</div><div class="stat__label" data-ru="стеков технологий" data-en="tech stacks">стеков технологий</div></div>
+      <div class="stat"><div class="stat__value">24/7</div><div class="stat__label" data-ru="на связи" data-en="available">на связи</div></div>
+    </div>
+  </div>
+</section>
 
-    <div class="stats">
-      <div class="stat reveal">
-        <div class="num">[X]+</div>
-        <div class="label" data-ru="лет опыта" data-en="years of experience">лет опыта</div>
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="section__title reveal" data-ru="Обо мне" data-en="About me">Обо мне</h2>
+    <div class="about">
+      <div class="about__text reveal d1">
+        <p class="about__lead"
+          data-ru="Я — разработчик полного цикла. Работаю с проектами любой сложности: от лендинга до высоконагруженных веб-приложений, AI-сервисов, автоматизации и серверной инфраструктуры."
+          data-en="I am a full-cycle developer working on projects of any complexity — from a landing page to high-load web apps, AI services, automation and server infrastructure.">
+          Я — разработчик полного цикла. Работаю с проектами любой сложности: от лендинга до высоконагруженных веб-приложений, AI-сервисов, автоматизации и серверной инфраструктуры.
+        </p>
+        <p data-ru="Начинал с вёрстки и WordPress, затем ушёл в Python-бэкенд, автоматизацию и парсинг, а сегодня плотно работаю с нейросетями, базами данных и настройкой серверов. Всегда довожу проект до конца и остаюсь на связи после сдачи."
+          data-en="I started with markup and WordPress, then moved into Python backend, automation and scraping. Today I work heavily with neural networks, databases and server configuration. I always finish what I start and stay in touch after delivery.">
+          Начинал с вёрстки и WordPress, затем ушёл в Python-бэкенд, автоматизацию и парсинг, а сегодня плотно работаю с нейросетями, базами данных и настройкой серверов. Всегда довожу проект до конца и остаюсь на связи после сдачи.
+        </p>
+        <p data-ru="Не боюсь нестандартных задач: если что-то не описано в документации — разберусь, настрою, внедрю. Мой подход — сделать так, чтобы клиент получил работающий результат, а не набор скриптов."
+          data-en="I am not afraid of unusual tasks: if it is not documented, I will figure it out, configure it and ship it. My approach is simple — the client gets a working result, not a pile of scripts.">
+          Не боюсь нестандартных задач: если что-то не описано в документации — разберусь, настрою, внедрю. Мой подход — сделать так, чтобы клиент получил работающий результат, а не набор скриптов.
+        </p>
       </div>
-      <div class="stat reveal">
-        <div class="num">[X]+</div>
-        <div class="label" data-ru="проектов сдано" data-en="projects delivered">проектов сдано</div>
+      <ul class="about__points reveal d2">
+        <li><i class="fa-solid fa-check"></i><span data-ru="Проекты под ключ — от ТЗ до продакшена" data-en="Turnkey projects — from brief to production">Проекты под ключ — от ТЗ до продакшена</span></li>
+        <li><i class="fa-solid fa-check"></i><span data-ru="Чистый код, документация, поддержка" data-en="Clean code, documentation, ongoing support">Чистый код, документация, поддержка</span></li>
+        <li><i class="fa-solid fa-check"></i><span data-ru="Оплата по этапам и фиксированная смета" data-en="Milestone payments and fixed estimate">Оплата по этапам и фиксированная смета</span></li>
+        <li><i class="fa-solid fa-check"></i><span data-ru="Настройка серверов, доменов, SSL и бэкапов" data-en="Server, domain, SSL and backup configuration">Настройка серверов, доменов, SSL и бэкапов</span></li>
+        <li><i class="fa-solid fa-check"></i><span data-ru="Прямая коммуникация без посредников" data-en="Direct communication, no middlemen">Прямая коммуникация без посредников</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="skills">
+  <div class="container">
+    <h2 class="section__title reveal" data-ru="Навыки и технологии" data-en="Skills and technologies">Навыки и технологии</h2>
+    <p class="section__subtitle reveal d1"
+      data-ru="Полный стек, который закрывает задачи любой сложности — от фронтенда и бэкенда до серверов, баз данных и AI"
+      data-en="A full stack covering tasks of any complexity — from frontend and backend to servers, databases and AI">
+      Полный стек, который закрывает задачи любой сложности — от фронтенда и бэкенда до серверов, баз данных и AI
+    </p>
+    <div class="skills">
+      <div class="skill-card reveal">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-brands fa-python"></i></span>
+          <h3 data-ru="Python и бэкенд" data-en="Python & Backend">Python и бэкенд</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="PyQt5 / PySide6 / Tkinter / CustomTkinter — десктопные приложения с интерфейсом" data-en="PyQt5 / PySide6 / Tkinter / CustomTkinter — desktop apps with GUI">PyQt5 / PySide6 / Tkinter / CustomTkinter — десктопные приложения с интерфейсом</li>
+          <li data-ru="Flask, Django, Django REST Framework, FastAPI" data-en="Flask, Django, Django REST Framework, FastAPI">Flask, Django, Django REST Framework, FastAPI</li>
+          <li data-ru="Парсинг: BeautifulSoup, Scrapy, Selenium, Playwright, requests, httpx, lxml" data-en="Scraping: BeautifulSoup, Scrapy, Selenium, Playwright, requests, httpx, lxml">Парсинг: BeautifulSoup, Scrapy, Selenium, Playwright, requests, httpx, lxml</li>
+          <li data-ru="Антидетект: undetected-chromedriver, fake-useragent, ротация прокси, обход капчи" data-en="Anti-detect: undetected-chromedriver, fake-useragent, proxy rotation, captcha bypass">Антидетект: undetected-chromedriver, fake-useragent, ротация прокси, обход капчи</li>
+          <li data-ru="Боты: aiogram, python-telegram-bot, Telethon, discord.py, VK API, WhatsApp" data-en="Bots: aiogram, python-telegram-bot, Telethon, discord.py, VK API, WhatsApp">Боты: aiogram, python-telegram-bot, Telethon, discord.py, VK API, WhatsApp</li>
+          <li data-ru="Автоматизация бизнес-процессов, десктопные утилиты, GUI-инструменты" data-en="Business process automation, desktop utilities, GUI tools">Автоматизация бизнес-процессов, десктопные утилиты, GUI-инструменты</li>
+        </ul>
       </div>
-      <div class="stat reveal">
-        <div class="num">[X]+</div>
-        <div class="label" data-ru="довольных клиентов" data-en="happy clients">довольных клиентов</div>
+
+      <div class="skill-card reveal d1">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-brands fa-react"></i></span>
+          <h3 data-ru="Frontend" data-en="Frontend">Frontend</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="HTML5, CSS3, SCSS / SASS / LESS" data-en="HTML5, CSS3, SCSS / SASS / LESS">HTML5, CSS3, SCSS / SASS / LESS</li>
+          <li data-ru="JavaScript (ES6+), TypeScript, jQuery" data-en="JavaScript (ES6+), TypeScript, jQuery">JavaScript (ES6+), TypeScript, jQuery</li>
+          <li data-ru="React, Next.js, Vite" data-en="React, Next.js, Vite">React, Next.js, Vite</li>
+          <li data-ru="Swiper, Slick, GSAP, AOS, Three.js, Locomotive Scroll" data-en="Swiper, Slick, GSAP, AOS, Three.js, Locomotive Scroll">Swiper, Slick, GSAP, AOS, Three.js, Locomotive Scroll</li>
+          <li data-ru="Figma — верстка pixel-perfect" data-en="Figma — pixel-perfect markup">Figma — верстка pixel-perfect</li>
+          <li data-ru="Адаптив, кроссбраузерность, доступность" data-en="Responsive, cross-browser, accessible">Адаптив, кроссбраузерность, доступность</li>
+        </ul>
       </div>
-      <div class="stat reveal">
-        <div class="num">100%</div>
-        <div class="label" data-ru="в срок" data-en="on time">в срок</div>
+
+      <div class="skill-card reveal d2">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-brands fa-wordpress"></i></span>
+          <h3 data-ru="PHP и CMS" data-en="PHP & CMS">PHP и CMS</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="PHP 8, ООП, Composer" data-en="PHP 8, OOP, Composer">PHP 8, ООП, Composer</li>
+          <li data-ru="WordPress — основной стек: темы, плагины, доработки любой сложности" data-en="WordPress — main stack: themes, plugins, customizations of any complexity">WordPress — основной стек: темы, плагины, доработки любой сложности</li>
+          <li data-ru="OpenCart, Joomla, MODX, Bitrix, DLE" data-en="OpenCart, Joomla, MODX, Bitrix, DLE">OpenCart, Joomla, MODX, Bitrix, DLE</li>
+          <li data-ru="Elementor, ACF Pro, WooCommerce, WPBakery, Yoast, Contact Form 7" data-en="Elementor, ACF Pro, WooCommerce, WPBakery, Yoast, Contact Form 7">Elementor, ACF Pro, WooCommerce, WPBakery, Yoast, Contact Form 7</li>
+          <li data-ru="Кастомные типы записей, таксономии, шаблоны, сниппеты, хуки" data-en="Custom post types, taxonomies, templates, snippets, hooks">Кастомные типы записей, таксономии, шаблоны, сниппеты, хуки</li>
+          <li data-ru="Разработка кастомных плагинов и интеграций под задачу" data-en="Custom plugins and integrations tailored to business needs">Разработка кастомных плагинов и интеграций под задачу</li>
+        </ul>
+      </div>
+
+      <div class="skill-card reveal d3">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-solid fa-database"></i></span>
+          <h3 data-ru="Базы данных" data-en="Databases">Базы данных</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="PostgreSQL, MySQL, MariaDB, SQLite" data-en="PostgreSQL, MySQL, MariaDB, SQLite">PostgreSQL, MySQL, MariaDB, SQLite</li>
+          <li data-ru="MongoDB, Redis — NoSQL и кэширование" data-en="MongoDB, Redis — NoSQL and caching">MongoDB, Redis — NoSQL и кэширование</li>
+          <li data-ru="ORM: SQLAlchemy, Django ORM, Motor (async MongoDB)" data-en="ORM: SQLAlchemy, Django ORM, Motor (async MongoDB)">ORM: SQLAlchemy, Django ORM, Motor (async MongoDB)</li>
+          <li data-ru="Проектирование схем, миграции (Alembic, Django migrations)" data-en="Schema design, migrations (Alembic, Django migrations)">Проектирование схем, миграции (Alembic, Django migrations)</li>
+          <li data-ru="Оптимизация запросов, индексы, EXPLAIN, партиционирование, WAL" data-en="Query optimization, indexes, EXPLAIN, partitioning, WAL">Оптимизация запросов, индексы, EXPLAIN, партиционирование, WAL</li>
+          <li data-ru="Резервное копирование, репликация, бэкапы и восстановление" data-en="Backups, replication, restore and recovery">Резервное копирование, репликация, бэкапы и восстановление</li>
+        </ul>
+      </div>
+
+      <div class="skill-card reveal d4">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-solid fa-server"></i></span>
+          <h3 data-ru="Серверы и DevOps" data-en="Servers & DevOps">Серверы и DevOps</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="Linux: Ubuntu, Debian, CentOS, AlmaLinux — установка, настройка, администрирование" data-en="Linux: Ubuntu, Debian, CentOS, AlmaLinux — install, configure, admin">Linux: Ubuntu, Debian, CentOS, AlmaLinux — установка, настройка, администрирование</li>
+          <li data-ru="Windows Server — IIS, RDP, PowerShell, разворачивание web-приложений" data-en="Windows Server — IIS, RDP, PowerShell, web app deployment">Windows Server — IIS, RDP, PowerShell, разворачивание web-приложений</li>
+          <li data-ru="Nginx, Apache, Caddy — веб-серверы, reverse proxy, балансировка" data-en="Nginx, Apache, Caddy — web servers, reverse proxy, load balancing">Nginx, Apache, Caddy — веб-серверы, reverse proxy, балансировка</li>
+          <li data-ru="SSL/TLS: Let's Encrypt, Certbot, самоподписанные, wildcard-сертификаты" data-en="SSL/TLS: Let's Encrypt, Certbot, self-signed, wildcard certificates">SSL/TLS: Let's Encrypt, Certbot, самоподписанные, wildcard-сертификаты</li>
+          <li data-ru="Домены, DNS, поддомены, редиректы, почта (Postfix, DKIM, SPF, DMARC)" data-en="Domains, DNS, subdomains, redirects, mail (Postfix, DKIM, SPF, DMARC)">Домены, DNS, поддомены, редиректы, почта (Postfix, DKIM, SPF, DMARC)</li>
+          <li data-ru="Безопасность: UFW, iptables, fail2ban, SSH-ключи, firewall, 2FA" data-en="Security: UFW, iptables, fail2ban, SSH keys, firewall, 2FA">Безопасность: UFW, iptables, fail2ban, SSH-ключи, firewall, 2FA</li>
+          <li data-ru="Docker, Docker Compose, портативные окружения и деплой" data-en="Docker, Docker Compose, portable environments and deployment">Docker, Docker Compose, портативные окружения и деплой</li>
+          <li data-ru="CI/CD: GitHub Actions, GitLab CI, автодеплой, systemd, PM2" data-en="CI/CD: GitHub Actions, GitLab CI, auto-deploy, systemd, PM2">CI/CD: GitHub Actions, GitLab CI, автодеплой, systemd, PM2</li>
+          <li data-ru="Мониторинг: Zabbix, Grafana, Prometheus, логирование" data-en="Monitoring: Zabbix, Grafana, Prometheus, logging">Мониторинг: Zabbix, Grafana, Prometheus, логирование</li>
+        </ul>
+      </div>
+
+      <div class="skill-card reveal d5">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-solid fa-brain"></i></span>
+          <h3 data-ru="AI и нейросети" data-en="AI & Neural Networks">AI и нейросети</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="Классификация изображений, компьютерное зрение, обучение и дообучение моделей" data-en="Image classification, computer vision, training and fine-tuning models">Классификация изображений, компьютерное зрение, обучение и дообучение моделей</li>
+          <li data-ru="LLM по API: OpenAI GPT, Claude, DeepSeek, Llama, Grok, Gemini" data-en="LLM via API: OpenAI GPT, Claude, DeepSeek, Llama, Grok, Gemini">LLM по API: OpenAI GPT, Claude, DeepSeek, Llama, Grok, Gemini</li>
+          <li data-ru="Локальный деплой: Ollama, LM Studio, vLLM, Whisper Turbo" data-en="Local deployment: Ollama, LM Studio, vLLM, Whisper Turbo">Локальный деплой: Ollama, LM Studio, vLLM, Whisper Turbo</li>
+          <li data-ru="Генерация изображений: DALL-E, Stable Diffusion, Flux, Midjourney, together.ai" data-en="Image generation: DALL-E, Stable Diffusion, Flux, Midjourney, together.ai">Генерация изображений: DALL-E, Stable Diffusion, Flux, Midjourney, together.ai</li>
+          <li data-ru="HuggingFace — загрузка и разворачивание моделей" data-en="HuggingFace — model loading and deployment">HuggingFace — загрузка и разворачивание моделей</li>
+          <li data-ru="Внедрение AI в веб-сервисы, ботов и бизнес-процессы" data-en="AI integration into web services, bots and business processes">Внедрение AI в веб-сервисы, ботов и бизнес-процессы</li>
+        </ul>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-solid fa-spider"></i></span>
+          <h3 data-ru="Парсинг и автоматизация" data-en="Scraping & Automation">Парсинг и автоматизация</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="Многопоточный парсинг (ThreadPoolExecutor, asyncio)" data-en="Multithreaded scraping (ThreadPoolExecutor, asyncio)">Многопоточный парсинг (ThreadPoolExecutor, asyncio)</li>
+          <li data-ru="Обход CloudFlare, антибот-защит через tls_requests, undetected-chromedriver" data-en="CloudFlare, antibot bypass via tls_requests, undetected-chromedriver">Обход CloudFlare, антибот-защит через tls_requests, undetected-chromedriver</li>
+          <li data-ru="Работа с API и GraphQL, парсинг __NEXT_DATA__ и встроенных JSON" data-en="API and GraphQL, parsing __NEXT_DATA__ and embedded JSON">Работа с API и GraphQL, парсинг __NEXT_DATA__ и встроенных JSON</li>
+          <li data-ru="Прокси-ротация, SOCKS5/HTTP, автоопределение MX и SMTP через autoconfig" data-en="Proxy rotation, SOCKS5/HTTP, MX and SMTP autodiscovery">Прокси-ротация, SOCKS5/HTTP, автоопределение MX и SMTP через autoconfig</li>
+          <li data-ru="Экспорт в Excel (openpyxl), CSV, JSON, базы данных" data-en="Export to Excel (openpyxl), CSV, JSON, databases">Экспорт в Excel (openpyxl), CSV, JSON, базы данных</li>
+          <li data-ru="GUI-инструменты на PyQt6 для управления парсингом и обработкой" data-en="PyQt6 GUI tools for scraping and processing management">GUI-инструменты на PyQt6 для управления парсингом и обработкой</li>
+        </ul>
+      </div>
+
+      <div class="skill-card reveal d1">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-solid fa-credit-card"></i></span>
+          <h3 data-ru="Интеграции и платежи" data-en="Integrations & Payments">Интеграции и платежи</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="YooKassa, Stripe, PayPal, Tinkoff, CloudPayments, Cryptomus, FreeKassa" data-en="YooKassa, Stripe, PayPal, Tinkoff, CloudPayments, Cryptomus, FreeKassa">YooKassa, Stripe, PayPal, Tinkoff, CloudPayments, Cryptomus, FreeKassa</li>
+          <li data-ru="REST API, Webhooks, OAuth, GraphQL" data-en="REST API, Webhooks, OAuth, GraphQL">REST API, Webhooks, OAuth, GraphQL</li>
+          <li data-ru="SMTP/IMAP почта, отправка и парсинг писем, вложения" data-en="SMTP/IMAP mail, sending and parsing emails, attachments">SMTP/IMAP почта, отправка и парсинг писем, вложения</li>
+          <li data-ru="Telegram, Discord, VK, WhatsApp Business API" data-en="Telegram, Discord, VK, WhatsApp Business API">Telegram, Discord, VK, WhatsApp Business API</li>
+          <li data-ru="JWT, шифрование паролей (Fernet, PBKDF2), безопасность" data-en="JWT, password encryption (Fernet, PBKDF2), security">JWT, шифрование паролей (Fernet, PBKDF2), безопасность</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about">
+<section class="section ai" id="ai">
+  <div class="ai__glow"></div>
   <div class="container">
-    <h2 class="section-title reveal" data-ru="Обо мне" data-en="About me">Обо мне</h2>
-    <p class="section-sub reveal"
-       data-ru="Немного о том, кто я и чем могу быть полезен."
-       data-en="A few words about who I am and how I can help.">Немного о том, кто я.</p>
-
-    <div class="skills-grid">
-      <div class="skill-card reveal" style="grid-column: span 2;">
-        <p style="color: var(--text); font-size: 17px;"
-           data-ru="[ЗАМЕНИ НА СВОЙ ТЕКСТ] Я — разработчик с опытом в создании веб-приложений и автоматизации. Работаю с современным стеком, пишу чистый код, покрываю тестами и слежу за тем, чтобы всё не только работало, но и было удобно поддерживать. Люблю сложные задачи и не боюсь легаси."
-           data-en="[REPLACE WITH YOUR TEXT] I'm a developer experienced in building web apps and automation. I work with a modern stack, write clean code, cover it with tests, and make sure everything is not only working but also easy to maintain. I love hard problems and I'm not afraid of legacy.">
-          [ЗАМЕНИ НА СВОЙ ТЕКСТ] Я — разработчик с опытом в создании веб-приложений.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills" style="background: var(--bg2);">
-  <div class="container">
-    <h2 class="section-title reveal" data-ru="Навыки" data-en="Skills">Навыки</h2>
-    <p class="section-sub reveal"
-       data-ru="Технологии, с которыми я работаю каждый день."
-       data-en="Technologies I work with every day.">Технологии, с которыми я работаю.</p>
-
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <h3><span class="dot"></span><span data-ru="Frontend" data-en="Frontend">Frontend</span></h3>
-        <div class="tags">
-          <span class="tag">JavaScript</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">React</span>
-          <span class="tag">Vue</span>
-          <span class="tag">HTML5</span>
-          <span class="tag">CSS3</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3><span class="dot"></span><span data-ru="Backend" data-en="Backend">Backend</span></h3>
-        <div class="tags">
-          <span class="tag">Node.js</span>
-          <span class="tag">Python</span>
-          <span class="tag">FastAPI</span>
-          <span class="tag">Django</span>
-          <span class="tag">PostgreSQL</span>
-          <span class="tag">Redis</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3><span class="dot"></span><span data-ru="DevOps" data-en="DevOps">DevOps</span></h3>
-        <div class="tags">
-          <span class="tag">Docker</span>
-          <span class="tag">GitHub Actions</span>
-          <span class="tag">Nginx</span>
-          <span class="tag">Linux</span>
-          <span class="tag">CI/CD</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3><span class="dot"></span><span data-ru="Инструменты" data-en="Tools">Инструменты</span></h3>
-        <div class="tags">
-          <span class="tag">Git</span>
-          <span class="tag">Figma</span>
-          <span class="tag">Postman</span>
-          <span class="tag">Jira</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="container">
-    <h2 class="section-title reveal" data-ru="Проекты" data-en="Projects">Проекты</h2>
-    <p class="section-sub reveal"
-       data-ru="[ЗАМЕНИ НА СВОИ РЕАЛЬНЫЕ ПРОЕКТЫ]"
-       data-en="[REPLACE WITH YOUR REAL PROJECTS]">Мои работы.</p>
-
-    <div class="projects">
-      <div class="project reveal">
-        <h3 data-ru="Название проекта 1" data-en="Project Name 1">Название проекта 1</h3>
-        <p data-ru="Короткое описание: какую задачу решает, для кого, какой результат."
-           data-en="Short description: what problem it solves, for whom, and the result.">
-          Короткое описание проекта.
-        </p>
-        <div class="tags">
-          <span class="tag">Python</span>
-          <span class="tag">FastAPI</span>
-          <span class="tag">PostgreSQL</span>
-        </div>
-        <div class="links">
-          <a href="#" data-ru="Демо →" data-en="Demo →">Демо →</a>
-          <a href="#" data-ru="Код →" data-en="Code →">Код →</a>
-        </div>
-      </div>
-
-      <div class="project reveal">
-        <h3 data-ru="Название проекта 2" data-en="Project Name 2">Название проекта 2</h3>
-        <p data-ru="Короткое описание проекта и его пользы."
-           data-en="Short description of the project and its value.">
-          Короткое описание проекта.
-        </p>
-        <div class="tags">
-          <span class="tag">React</span>
-          <span class="tag">Node.js</span>
-          <span class="tag">Docker</span>
-        </div>
-        <div class="links">
-          <a href="#" data-ru="Демо →" data-en="Demo →">Демо →</a>
-          <a href="#" data-ru="Код →" data-en="Code →">Код →</a>
-        </div>
-      </div>
-
-      <div class="project reveal">
-        <h3 data-ru="Название проекта 3" data-en="Project Name 3">Название проекта 3</h3>
-        <p data-ru="Что сделал, какие технологии использовал, какой результат."
-           data-en="What I built, which technologies I used, and the outcome.">
-          Короткое описание проекта.
-        </p>
-        <div class="tags">
-          <span class="tag">Vue</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">REST API</span>
-        </div>
-        <div class="links">
-          <a href="#" data-ru="Демо →" data-en="Demo →">Демо →</a>
-          <a href="#" data-ru="Код →" data-en="Code →">Код →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" style="background: var(--bg2);">
-  <div class="container">
-    <div class="contact-box reveal">
-      <h2 data-ru="Давайте работать вместе" data-en="Let's work together">Давайте работать вместе</h2>
-      <p data-ru="Открыт для фриланса и долгосрочного сотрудничества. Отвечаю быстро."
-         data-en="Open for freelance and long-term collaboration. I reply fast.">
-        Открыт для фриланса и долгосрочного сотрудничества.
+    <div style="text-align:center">
+      <span class="tag reveal">AI / ML</span>
+      <h2 class="section__title reveal d1" data-ru="AI-решения" data-en="AI solutions">AI-решения</h2>
+      <p class="section__subtitle reveal d2"
+        data-ru="Нейросети — не хайп, а рабочий инструмент. Внедряю их туда, где они реально экономят время и деньги."
+        data-en="Neural networks are not hype — they are a working tool. I integrate them where they truly save time and money.">
+        Нейросети — не хайп, а рабочий инструмент. Внедряю их туда, где они реально экономят время и деньги.
       </p>
-      <div class="contact-links">
-        <a href="mailto:[ТВОЙ EMAIL]" class="btn btn-primary">
-          <span data-ru="Написать на email" data-en="Email me">Написать на email</span>
-        </a>
-        <a href="https://github.com/nikita-dev-it" target="_blank" class="btn btn-ghost">GitHub</a>
-        <a href="[ССЫЛКА НА TELEGRAM]" target="_blank" class="btn btn-ghost">Telegram</a>
+    </div>
+    <div class="ai__grid">
+      <div class="ai-card reveal">
+        <div class="ai-card__icon"><i class="fa-solid fa-brain"></i></div>
+        <h3 data-ru="LLM и чат-боты" data-en="LLM & Chatbots">LLM и чат-боты</h3>
+        <p data-ru="Подключаю GPT, Claude, DeepSeek, Llama, Grok и Gemini по API. Разворачиваю локально через Ollama, LM Studio и vLLM. Строю ассистентов, чат-ботов поддержки, генераторов контента и агентов для бизнес-задач."
+          data-en="I connect GPT, Claude, DeepSeek, Llama, Grok and Gemini via API. I deploy locally with Ollama, LM Studio and vLLM. I build assistants, support bots, content generators and agents for business tasks.">
+          Подключаю GPT, Claude, DeepSeek, Llama, Grok и Gemini по API. Разворачиваю локально через Ollama, LM Studio и vLLM. Строю ассистентов, чат-ботов поддержки, генераторов контента и агентов для бизнес-задач.
+        </p>
       </div>
+      <div class="ai-card reveal d1">
+        <div class="ai-card__icon"><i class="fa-solid fa-eye"></i></div>
+        <h3 data-ru="Computer Vision" data-en="Computer Vision">Computer Vision</h3>
+        <p data-ru="Классификация изображений, распознавание объектов, модерация контента, OCR. Обучаю и дообучаю модели под конкретную задачу — от разметки датасета до деплоя в прод."
+          data-en="Image classification, object detection, content moderation, OCR. I train and fine-tune models for a specific task — from dataset labeling to production deployment.">
+          Классификация изображений, распознавание объектов, модерация контента, OCR. Обучаю и дообучаю модели под конкретную задачу — от разметки датасета до деплоя в прод.
+        </p>
+      </div>
+      <div class="ai-card reveal d2">
+        <div class="ai-card__icon"><i class="fa-solid fa-image"></i></div>
+        <h3 data-ru="Генерация изображений" data-en="Image generation">Генерация изображений</h3>
+        <p data-ru="DALL-E, Stable Diffusion, Flux, Midjourney, together.ai. Разворачиваю готовые веб-интерфейсы (Automatic1111, ComfyUI, Fooocus), настраиваю под задачу, подключаю оплату и очереди."
+          data-en="DALL-E, Stable Diffusion, Flux, Midjourney, together.ai. I deploy ready-made web UIs (Automatic1111, ComfyUI, Fooocus), tune them for the task, connect payments and queues.">
+          DALL-E, Stable Diffusion, Flux, Midjourney, together.ai. Разворачиваю готовые веб-интерфейсы (Automatic1111, ComfyUI, Fooocus), настраиваю под задачу, подключаю оплату и очереди.
+        </p>
+      </div>
+      <div class="ai-card reveal d3">
+        <div class="ai-card__icon"><i class="fa-solid fa-plug"></i></div>
+        <h3 data-ru="Интеграции" data-en="Integrations">Интеграции</h3>
+        <p data-ru="Встраиваю нейросети в сайты, Telegram и Discord ботов, CRM, WordPress и любые внутренние сервисы. Настраиваю API-ключи, лимиты, логирование и аналитику, fallback между провайдерами."
+          data-en="I embed neural networks into websites, Telegram and Discord bots, CRM, WordPress and any internal service. I set up API keys, limits, logging, analytics and provider fallback.">
+          Встраиваю нейросети в сайты, Telegram и Discord ботов, CRM, WordPress и любые внутренние сервисы. Настраиваю API-ключи, лимиты, логирование и аналитику, fallback между провайдерами.
+        </p>
+      </div>
+    </div>
+    <div class="ai__note reveal">
+      <p data-ru="Беру готовое решение и адаптирую под вас — либо собираю с нуля под конкретную задачу. Сроки и стоимость обсуждаем индивидуально."
+        data-en="I can take a ready-made solution and adapt it for you — or build one from scratch for a specific task. Timeline and cost are discussed individually.">
+        Беру готовое решение и адаптирую под вас — либо собираю с нуля под конкретную задачу. Сроки и стоимость обсуждаем индивидуально.
+      </p>
+      <a href="#contact" class="btn btn--primary">
+        <span data-ru="Обсудить AI-проект" data-en="Discuss an AI project">Обсудить AI-проект</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
     </div>
   </div>
 </section>
 
-<footer>
+<section class="section section--alt" id="services">
   <div class="container">
-    <p>© 2026 Nikita Bocharov. <span data-ru="Все права защищены." data-en="All rights reserved.">Все права защищены.</span></p>
+    <h2 class="section__title reveal" data-ru="Услуги под ключ" data-en="Turnkey services">Услуги под ключ</h2>
+    <p class="section__subtitle reveal d1"
+      data-ru="Полный цикл: от идеи и ТЗ до продакшена и поддержки"
+      data-en="Full cycle: from idea and brief to production and support">
+      Полный цикл: от идеи и ТЗ до продакшена и поддержки
+    </p>
+    <div class="services">
+      <div class="service-card reveal"><div class="service-card__icon"><i class="fa-solid fa-globe"></i></div><h3 data-ru="Сайты и лендинги" data-en="Websites & landings">Сайты и лендинги</h3><p data-ru="Корпоративные сайты, лендинги, визитки — быстро, красиво, с адаптивом." data-en="Corporate sites, landings, business cards — fast, beautiful, responsive.">Корпоративные сайты, лендинги, визитки — быстро, красиво, с адаптивом.</p></div>
+      <div class="service-card reveal d1"><div class="service-card__icon"><i class="fa-solid fa-cart-shopping"></i></div><h3 data-ru="Интернет-магазины" data-en="E-commerce">Интернет-магазины</h3><p data-ru="WooCommerce, OpenCart, кастомные магазины с оплатой и доставкой." data-en="WooCommerce, OpenCart, custom stores with payment and delivery.">WooCommerce, OpenCart, кастомные магазины с оплатой и доставкой.</p></div>
+      <div class="service-card reveal d2"><div class="service-card__icon"><i class="fa-solid fa-code"></i></div><h3 data-ru="Веб-приложения и SaaS" data-en="Web apps & SaaS">Веб-приложения и SaaS</h3><p data-ru="React + FastAPI / Django. Личные кабинеты, дашборды, подписки." data-en="React + FastAPI / Django. Dashboards, user areas, subscriptions.">React + FastAPI / Django. Личные кабинеты, дашборды, подписки.</p></div>
+      <div class="service-card reveal d3"><div class="service-card__icon"><i class="fa-solid fa-robot"></i></div><h3 data-ru="Боты и автоматизация" data-en="Bots & automation">Боты и автоматизация</h3><p data-ru="Telegram, Discord, VK, WhatsApp. Парсеры, автоотчёты, автопостинг." data-en="Telegram, Discord, VK, WhatsApp. Scrapers, auto-reports, auto-posting.">Telegram, Discord, VK, WhatsApp. Парсеры, автоотчёты, автопостинг.</p></div>
+      <div class="service-card reveal d4"><div class="service-card__icon"><i class="fa-solid fa-brain"></i></div><h3 data-ru="AI-интеграции" data-en="AI integrations">AI-интеграции</h3><p data-ru="Внедрение LLM, генерация контента и изображений, обучение моделей." data-en="LLM embedding, content and image generation, model training.">Внедрение LLM, генерация контента и изображений, обучение моделей.</p></div>
+      <div class="service-card reveal d5"><div class="service-card__icon"><i class="fa-brands fa-wordpress"></i></div><h3 data-ru="WordPress под задачу" data-en="WordPress tailored">WordPress под задачу</h3><p data-ru="Плагины, темы, доработки, ускорение, миграции и интеграции." data-en="Plugins, themes, customizations, speed-up, migrations and integrations.">Плагины, темы, доработки, ускорение, миграции и интеграции.</p></div>
+      <div class="service-card reveal"><div class="service-card__icon"><i class="fa-solid fa-spider"></i></div><h3 data-ru="Парсинг и сбор данных" data-en="Scraping & data">Парсинг и сбор данных</h3><p data-ru="Многопоточные парсеры, обход антибот-защит, интеграция с БД и Excel." data-en="Multithreaded scrapers, antibot bypass, DB and Excel integration.">Многопоточные парсеры, обход антибот-защит, интеграция с БД и Excel.</p></div>
+      <div class="service-card reveal d1"><div class="service-card__icon"><i class="fa-solid fa-database"></i></div><h3 data-ru="Базы данных" data-en="Databases">Базы данных</h3><p data-ru="Проектирование, оптимизация, миграции, репликация, бэкапы PostgreSQL, MySQL, MongoDB." data-en="Design, optimization, migrations, replication, backups for PostgreSQL, MySQL, MongoDB.">Проектирование, оптимизация, миграции, репликация, бэкапы PostgreSQL, MySQL, MongoDB.</p></div>
+      <div class="service-card reveal d2"><div class="service-card__icon"><i class="fa-solid fa-server"></i></div><h3 data-ru="Серверы и инфраструктура" data-en="Servers & infrastructure">Серверы и инфраструктура</h3><p data-ru="Linux и Windows Server, Nginx, Apache, SSL, DNS, Docker, CI/CD, мониторинг." data-en="Linux and Windows Server, Nginx, Apache, SSL, DNS, Docker, CI/CD, monitoring.">Linux и Windows Server, Nginx, Apache, SSL, DNS, Docker, CI/CD, мониторинг.</p></div>
+      <div class="service-card reveal d3"><div class="service-card__icon"><i class="fa-solid fa-credit-card"></i></div><h3 data-ru="Оплата и интеграции" data-en="Payments & integrations">Оплата и интеграции</h3><p data-ru="YooKassa, Stripe, PayPal, Tinkoff, крипта. Любые API и вебхуки." data-en="YooKassa, Stripe, PayPal, Tinkoff, crypto. Any API and webhooks.">YooKassa, Stripe, PayPal, Tinkoff, крипта. Любые API и вебхуки.</p></div>
+      <div class="service-card reveal d4"><div class="service-card__icon"><i class="fa-solid fa-desktop"></i></div><h3 data-ru="Десктопные приложения" data-en="Desktop apps">Десктопные приложения</h3><p data-ru="PyQt6 / Tkinter — GUI-утилиты, обработчики, внутренние инструменты." data-en="PyQt6 / Tkinter — GUI utilities, processors, internal tools.">PyQt6 / Tkinter — GUI-утилиты, обработчики, внутренние инструменты.</p></div>
+      <div class="service-card reveal d5"><div class="service-card__icon"><i class="fa-solid fa-headset"></i></div><h3 data-ru="Поддержка и развитие" data-en="Support & growth">Поддержка и развитие</h3><p data-ru="Ведение проекта, доработки, мониторинг, консультации." data-en="Project maintenance, improvements, monitoring, consulting.">Ведение проекта, доработки, мониторинг, консультации.</p></div>
+    </div>
+
+    <h3 class="process__title reveal" data-ru="Как я работаю" data-en="How I work">Как я работаю</h3>
+    <div class="process">
+      <div class="process__step reveal"><div class="process__num">01</div><h4 data-ru="Бриф" data-en="Brief">Бриф</h4><p data-ru="Обсуждаем задачу, цели, сроки и бюджет." data-en="We discuss the task, goals, deadlines and budget.">Обсуждаем задачу, цели, сроки и бюджет.</p></div>
+      <div class="process__step reveal d1"><div class="process__num">02</div><h4 data-ru="Смета и план" data-en="Estimate & plan">Смета и план</h4><p data-ru="Фиксирую этапы, стоимость и дедлайны." data-en="I fix the stages, cost and deadlines.">Фиксирую этапы, стоимость и дедлайны.</p></div>
+      <div class="process__step reveal d2"><div class="process__num">03</div><h4 data-ru="Разработка" data-en="Development">Разработка</h4><p data-ru="Работаю итерациями, показываю прогресс." data-en="I work in iterations and show progress.">Работаю итерациями, показываю прогресс.</p></div>
+      <div class="process__step reveal d3"><div class="process__num">04</div><h4 data-ru="Деплой" data-en="Deploy">Деплой</h4><p data-ru="Настраиваю сервер, домен, SSL, аналитику." data-en="I set up the server, domain, SSL and analytics.">Настраиваю сервер, домен, SSL, аналитику.</p></div>
+      <div class="process__step reveal d4"><div class="process__num">05</div><h4 data-ru="Поддержка" data-en="Support">Поддержка</h4><p data-ru="Остаюсь на связи и развиваю проект." data-en="I stay in touch and keep improving the project.">Остаюсь на связи и развиваю проект.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cases">
+  <div class="container">
+    <h2 class="section__title reveal" data-ru="Кейсы" data-en="Cases">Кейсы</h2>
+    <p class="section__subtitle reveal d1"
+      data-ru="Реальные проекты: интернет-магазины, каталоги, AI-сервисы, Telegram-боты, парсеры и автоматизация. Кликните на карточку — откроется подробное описание."
+      data-en="Real projects: e-commerce, catalogs, AI services, Telegram bots, scrapers and automation. Click a card to see details.">
+      Реальные проекты: интернет-магазины, каталоги, AI-сервисы, Telegram-боты, парсеры и автоматизация. Кликните на карточку — откроется подробное описание.
+    </p>
+
+    <div class="cases-filter reveal d2">
+      <button class="filter-btn active" data-filter="all" data-ru="Все" data-en="All">Все</button>
+      <button class="filter-btn" data-filter="shop" data-ru="Магазины" data-en="E-commerce">Магазины</button>
+      <button class="filter-btn" data-filter="catalog" data-ru="Каталоги" data-en="Catalogs">Каталоги</button>
+      <button class="filter-btn" data-filter="landing" data-ru="Лендинги" data-en="Landings">Лендинги</button>
+      <button class="filter-btn" data-filter="corporate" data-ru="Корпоративные" data-en="Corporate">Корпоративные</button>
+      <button class="filter-btn" data-filter="ai" data-ru="AI-сервисы" data-en="AI services">AI-сервисы</button>
+      <button class="filter-btn" data-filter="bot" data-ru="Telegram-боты" data-en="Telegram bots">Telegram-боты</button>
+      <button class="filter-btn" data-filter="parser" data-ru="Парсеры и автоматизация" data-en="Scrapers & automation">Парсеры и автоматизация</button>
+    </div>
+
+    <div class="cases-grid" id="casesGrid"></div>
+  </div>
+</section>
+
+<section class="section section--alt" id="contact">
+  <div class="container">
+    <h2 class="section__title reveal" data-ru="Свяжитесь со мной" data-en="Get in touch">Свяжитесь со мной</h2>
+    <p class="section__subtitle reveal d1"
+      data-ru="Расскажите о задаче — отвечу в течение дня и предложу решение"
+      data-en="Tell me about your task — I will reply within a day and suggest a solution">
+      Расскажите о задаче — отвечу в течение дня и предложу решение
+    </p>
+    <div class="contact reveal d2">
+      <a class="contact__link" href="https://t.me/Nikita_b_k" target="_blank" rel="noreferrer">
+        <i class="fa-brands fa-telegram"></i>
+        <div class="contact__link-info">
+          <span class="contact__link-title">Telegram</span>
+          <span class="contact__link-value">@Nikita_b_k</span>
+        </div>
+      </a>
+      <a class="contact__link" href="mailto:bnk.kursk@gmail.com">
+        <i class="fa-solid fa-envelope"></i>
+        <div class="contact__link-info">
+          <span class="contact__link-title">Email</span>
+          <span class="contact__link-value">bnk.kursk@gmail.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div>© <span id="year"></span> DEV.PORTFOLIO. <span data-ru="Все права защищены" data-en="All rights reserved">Все права защищены</span>.</div>
+    <div class="footer__tag" data-ru="Разработка под ключ" data-en="Turnkey development">Разработка под ключ</div>
   </div>
 </footer>
 
+<div class="modal" id="modal" onclick="closeModal(event)">
+  <div class="modal__backdrop"></div>
+  <div class="modal__window" onclick="event.stopPropagation()">
+    <button class="modal__close" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+    <div class="modal__hero"><img id="modalImg" src="" alt=""></div>
+    <div class="modal__body" id="modalBody"></div>
+  </div>
+</div>
+
 <script>
-  // Language switch
-  const btnRu = document.getElementById('btn-ru');
-  const btnEn = document.getElementById('btn-en');
-  function setLang(lang) {
-    document.documentElement.lang = lang;
-    btnRu.classList.toggle('active', lang === 'ru');
-    btnEn.classList.toggle('active', lang === 'en');
-    localStorage.setItem('lang', lang);
+/* ============ Language ============ */
+let currentLang = localStorage.getItem('lang') ||
+  ((navigator.language || 'en').slice(0,2).toLowerCase() === 'ru' ? 'ru' : 'en');
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.lang = lang;
+  document.getElementById('langLabel').textContent = lang.toUpperCase();
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  renderCases();
+  if (currentCaseKey && CASES[currentCaseKey]) {
+    modalBody.innerHTML = buildModalContent(CASES[currentCaseKey], lang);
   }
-  btnRu.addEventListener('click', () => setLang('ru'));
-  btnEn.addEventListener('click', () => setLang('en'));
-  const saved = localStorage.getItem('lang');
-  if (saved) setLang(saved);
+}
+function toggleLang() { applyLang(currentLang === 'ru' ? 'en' : 'ru'); }
 
-  // Reveal on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+/* ============ Header scroll ============ */
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 30); });
+
+/* ============ Burger ============ */
+function toggleMenu() {
+  const nav = document.getElementById('nav');
+  const icon = document.getElementById('burgerIcon');
+  nav.classList.toggle('open');
+  icon.className = nav.classList.contains('open') ? 'fa-solid fa-times' : 'fa-solid fa-bars';
+}
+document.querySelectorAll('.nav__link').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('nav').classList.remove('open');
+  document.getElementById('burgerIcon').className = 'fa-solid fa-bars';
+}));
+
+/* ============ Smooth scroll ============ */
+function scrollTop(e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+/* ============ Reveal ============ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+function observeReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => io.observe(el));
+}
+
+/* ============ CASES DATA ============ */
+const PLACEHOLDER = './assets/cases/заглушка.png';
+
+const CASES = {
+  /* ========== WORDPRESS / WEB ========== */
+  bitovki: {
+    img: './assets/cases/бытовки.png',
+    type: 'shop',
+    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
+    title: { ru: 'Bitovki Online — продажа топлива', en: 'Bitovki Online — fuel sales' },
+    url: 'https://bitovki-online.ru/', urlLabel: 'bitovki-online.ru',
+    task: { ru: 'Интернет-магазин по продаже топлива и бытовок с нестандартной логикой вывода товаров: данные берутся из кастомных полей WooCommerce и БД WordPress, нужны уникальные блоки и слайдеры.', en: 'E-commerce store for fuel and mobile homes with non-standard product output logic: data pulled from WooCommerce custom fields and the WordPress database, requiring unique blocks and sliders.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce поверх темы Blocksy. Разработал кастомные сниппеты PHP для уникального вывода данных из БД, настроил слайдеры и адаптивные карточки. Все динамические блоки на главной и в каталоге выводятся через собственные шаблоны.', en: 'Built the store on WordPress + WooCommerce on top of the Blocksy theme. Developed custom PHP snippets for unique DB output, configured sliders and responsive cards. All dynamic blocks on the homepage and in the catalog are rendered through custom templates.' },
+    features: { ru: ['Кастомные PHP-сниппеты для вывода данных из БД','Уникальные шаблоны карточек товаров','Слайдеры и адаптивные блоки на главной','Интеграция с WooCommerce и настройка корзины','Оптимизация загрузки страниц каталога'], en: ['Custom PHP snippets for DB data output','Unique product card templates','Sliders and responsive blocks on the homepage','WooCommerce integration and cart setup','Catalog page loading optimization'] },
+    stack: ['WordPress','WooCommerce','Blocksy','PHP','MySQL','HTML/CSS/jQuery'],
+    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Snippets', l: { ru: 'Кастом', en: 'Custom' } },{ v: 'Blocksy', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+  toplivo: {
+    img: './assets/cases/toplivo.png', type: 'shop',
+    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
+    title: { ru: 'Toplivo Center — продажа бытовок', en: 'Toplivo Center — mobile home sales' },
+    url: 'https://toplivocenter.ru/', urlLabel: 'toplivocenter.ru',
+    task: { ru: 'Магазин бытовок и топлива на WordPress с уникальным выводом товаров из базы и слайдерами на главной.', en: 'WordPress store for mobile homes and fuel with unique product output from the database and homepage sliders.' },
+    solution: { ru: 'Магазин на WordPress + WooCommerce, тема Blocksy. Разработал сниппеты для уникального вывода данных из БД, слайдеры, кастомные блоки главной страницы. Настроил карточки товаров и фильтрацию.', en: 'Store on WordPress + WooCommerce, Blocksy theme. Developed snippets for unique DB output, sliders, custom homepage blocks. Configured product cards and filtering.' },
+    features: { ru: ['Сниппеты для вывода данных из БД','Слайдеры на главной и в карточках','Кастомные блоки главной страницы','Адаптив под мобильные'], en: ['Snippets for DB output','Sliders on homepage and in cards','Custom homepage blocks','Mobile responsive'] },
+    stack: ['WordPress','WooCommerce','Blocksy','PHP','MySQL'],
+    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Sliders', l: { ru: 'Фичи', en: 'Features' } },{ v: 'Blocksy', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+  motofront: {
+    img: './assets/cases/image_2026-09-13_17-06-30.png', type: 'shop',
+    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
+    title: { ru: 'MotoFront — магазин мототехники', en: 'MotoFront — motorsport store' },
+    url: 'https://motofront.ru/', urlLabel: 'motofront.ru',
+    task: { ru: 'Интернет-магазин мототехники: багги, квадроциклы, мотоциклы. Нужны анимации, попапы, кастомные блоки и переработанные шаблоны WordPress.', en: 'Motorsport store: buggies, ATVs, motorcycles. Needed animations, popups, custom blocks and reworked WordPress templates.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce с темой Kadence. Разработал кастомные блоки через PHP-сниппеты, переработал шаблоны WP, добавил анимации, попапы и вёрстку HTML/CSS поверх темы.', en: 'Built the store on WordPress + WooCommerce with the Kadence theme. Developed custom blocks via PHP snippets, reworked WP templates, added animations, popups and HTML/CSS markup on top of the theme.' },
+    features: { ru: ['Кастомные блоки через сниппеты','Анимации и попапы','Переработанные шаблоны WordPress','Вёрстка HTML/CSS поверх Kadence','Каталог с фильтрацией по типам техники'], en: ['Custom blocks via snippets','Animations and popups','Reworked WordPress templates','HTML/CSS markup on top of Kadence','Catalog with filtering by vehicle type'] },
+    stack: ['WordPress','WooCommerce','Kadence','PHP','HTML/CSS','jQuery'],
+    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Animations', l: { ru: 'Фичи', en: 'Features' } },{ v: 'Kadence', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+  leadopay: {
+    img: './assets/cases/image_2026-09-13_17-10-20.png', type: 'landing',
+    typeLabel: { ru: 'Лендинг', en: 'Landing' },
+    title: { ru: 'Leadopay — единый портал', en: 'Leadopay — unified portal' },
+    url: 'https://leadopay.ru/', urlLabel: 'leadopay.ru',
+    task: { ru: 'Единый портал с пополнением рекламных бюджетов, trust-инфраструктурой, тарифами, кейсами и покупкой лидов в одном интерфейсе. Нужны CPT для кейсов и отправка форм в Telegram с обходом блокировок из РФ.', en: 'Unified portal with ad budget top-ups, trust infrastructure, pricing, cases and lead purchases in one interface. Required CPT for cases and Telegram form submission bypassing RU blocks.' },
+    solution: { ru: 'Собрал портал на WordPress. Вёрстка на HTML/CSS/jQuery. Реализовал кастомные типы записей для кейсов, формы с отправкой в Telegram через прокси-сервер для обхода блокировок из РФ. Настроил тарифы и разделы портала.', en: 'Built the portal on WordPress. HTML/CSS/jQuery markup. Implemented custom post types for cases, forms submitting to Telegram via a proxy server bypassing RU blocks. Configured pricing and portal sections.' },
+    features: { ru: ['Кастомные типы записей для кейсов','Отправка форм в Telegram с обходом блокировок','Разделы тарифов, кейсов, покупки лидов','Вёрстка HTML/CSS/jQuery','Интеграция платёжной инфраструктуры'], en: ['Custom post types for cases','Telegram form submission bypassing blocks','Pricing, cases, lead purchase sections','HTML/CSS/jQuery markup','Payment infrastructure integration'] },
+    stack: ['WordPress','PHP','HTML/CSS','jQuery','Telegram API','CPT'],
+    stats: [{ v: 'Portal', l: { ru: 'Тип', en: 'Type' } },{ v: 'CPT', l: { ru: 'Кастом', en: 'Custom' } },{ v: 'Bypass', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  lizing: {
+    img: './assets/cases/image_2026-09-13_17-12-32.png', type: 'corporate',
+    typeLabel: { ru: 'Корпоративный', en: 'Corporate' },
+    title: { ru: 'Лизинг-Прайм — лизинговая компания', en: 'Leasing Prime — leasing company' },
+    url: 'https://lizing-prime.ru/', urlLabel: 'lizing-prime.ru',
+    task: { ru: 'Сайт лизинговой компании с направлениями: автотехника, коммерческий транспорт, спецтехника, недвижимость, оборудование, IT. Клиент хотел копию понравившегося сайта с рерайтом.', en: 'Leasing company website with areas: vehicles, commercial transport, special equipment, real estate, machinery, IT. Client wanted a rewritten copy of a reference site.' },
+    solution: { ru: 'Реализовал копию референсного сайта на WordPress с полным рерайтом текстов. Настроил отправку форм в Telegram и на email. Собрал разделы под все направления лизинга с индивидуальными программами.', en: 'Implemented a copy of the reference site on WordPress with full text rewrite. Configured form submission to Telegram and email. Built sections for all leasing areas with individual programs.' },
+    features: { ru: ['Полный рерайт структуры референса','Отправка форм в Telegram и на email','Разделы по 8 направлениям лизинга','Индивидуальные программы и отсрочка оплаты','Адаптивная вёрстка'], en: ['Full rewrite of reference structure','Forms to Telegram and email','Sections for 8 leasing areas','Individual programs and deferred payment','Responsive markup'] },
+    stack: ['WordPress','PHP','Telegram API','SMTP','HTML/CSS/jQuery'],
+    stats: [{ v: 'Corporate', l: { ru: 'Тип', en: 'Type' } },{ v: '8 areas', l: { ru: 'Разделы', en: 'Sections' } },{ v: 'TG + Mail', l: { ru: 'Формы', en: 'Forms' } }]
+  },
+  topmassager: {
+    img: './assets/cases/image_2026-09-13_17-18-31.png', type: 'catalog',
+    typeLabel: { ru: 'Каталог', en: 'Catalog' },
+    title: { ru: 'TopMassager — массажные кресла', en: 'TopMassager — massage chairs' },
+    url: 'https://topmassager.ru/', urlLabel: 'topmassager.ru',
+    task: { ru: 'Магазин массажных кресел с обширными фильтрами для удобного подбора. Нужна самописная тема и CPT.', en: 'Massage chair store with extensive filters for convenient selection. Required a custom theme and CPT.' },
+    solution: { ru: 'Разработал самописную тему WordPress. Создал кастомный тип записей для кресел и обширную систему фильтров по характеристикам. Настроил удобный подбор кресел по параметрам.', en: 'Developed a custom WordPress theme. Created a custom post type for chairs and an extensive filter system by characteristics. Configured convenient chair selection by parameters.' },
+    features: { ru: ['Самописная тема WordPress','CPT для массажных кресел','Обширные фильтры по характеристикам','Удобный подбор товара'], en: ['Custom WordPress theme','CPT for massage chairs','Extensive characteristic filters','Convenient product selection'] },
+    stack: ['WordPress','PHP','Custom Theme','CPT','MySQL'],
+    stats: [{ v: 'Catalog', l: { ru: 'Тип', en: 'Type' } },{ v: 'Custom', l: { ru: 'Тема', en: 'Theme' } },{ v: 'Filters', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  jewelry: {
+    img: './assets/cases/image_2026-09-13_17-23-37.png', type: 'shop',
+    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
+    title: { ru: 'Jewelry UAE — ювелирные изделия', en: 'Jewelry UAE — jewelry store' },
+    url: 'https://jewelry-uae.ru/', urlLabel: 'jewelry-uae.ru',
+    task: { ru: 'Магазин ювелирных изделий с отправкой заказов и заявок в Telegram и на почту.', en: 'Jewelry store with orders and requests sent to Telegram and email.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce через Elementor. Настроил отправку заказов и заявок в Telegram и на email. Подключил каталог, корзину и оформление заказа.', en: 'Built the store on WordPress + WooCommerce via Elementor. Configured order and request submission to Telegram and email. Connected catalog, cart and checkout.' },
+    features: { ru: ['Сборка на Elementor','WooCommerce каталог и корзина','Отправка заказов в Telegram','Дублирование заявок на email'], en: ['Elementor assembly','WooCommerce catalog and cart','Orders to Telegram','Duplicate requests to email'] },
+    stack: ['WordPress','WooCommerce','Elementor','Telegram API','SMTP'],
+    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Elementor', l: { ru: 'Билдер', en: 'Builder' } },{ v: 'TG + Mail', l: { ru: 'Формы', en: 'Forms' } }]
+  },
+  markettehniki: {
+    img: './assets/cases/image_2026-09-13_17-28-15.png', type: 'shop',
+    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
+    title: { ru: 'MarketTehniki — техника для отдыха', en: 'MarketTehniki — outdoor gear' },
+    url: 'https://markettehniki.ru/', urlLabel: 'markettehniki.ru',
+    task: { ru: 'Магазин техники и комплектующих для активного отдыха: лодки, багги, аккумуляторы, сапборды. Нужен уникальный вывод данных из БД и блоки новостей.', en: 'Store for outdoor gear and parts: boats, buggies, batteries, SUP boards. Required unique DB output and news blocks.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce на базе темы Blocksy. Вёрстка HTML/CSS/jQuery, некоторые блоки через сниппеты для уникального вывода данных из БД, слайдеры, блоки новостей.', en: 'Built the store on WordPress + WooCommerce on the Blocksy theme. HTML/CSS/jQuery markup, some blocks via snippets for unique DB output, sliders, news blocks.' },
+    features: { ru: ['Тема Blocksy','Сниппеты для вывода из БД','Блоки новостей и слайдеры','Вёрстка HTML/CSS/jQuery','WooCommerce каталог и корзина'], en: ['Blocksy theme','DB output snippets','News blocks and sliders','HTML/CSS/jQuery markup','WooCommerce catalog and cart'] },
+    stack: ['WordPress','WooCommerce','Blocksy','HTML/CSS','jQuery','MySQL'],
+    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Snippets', l: { ru: 'Кастом', en: 'Custom' } },{ v: 'Blocksy', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+  avtoservice: {
+    img: './assets/cases/image_2026-09-13_17-30-12.png', type: 'corporate',
+    typeLabel: { ru: 'Корпоративный', en: 'Corporate' },
+    title: { ru: 'AvtoService Group — оборудование', en: 'AvtoService Group — equipment' },
+    url: 'https://avtoservice-group.ru/', urlLabel: 'avtoservice-group.ru',
+    task: { ru: 'Промышленное оборудование для автосервисов, автомоек и дилерских центров. Нужны свои типы записей и кастомные сниппеты для гармоничного вывода динамичных данных.', en: 'Industrial equipment for car services, car washes and dealerships. Required custom post types and snippets for balanced dynamic data output.' },
+    solution: { ru: 'Собрал сайт на WordPress с темой Kadence. Реализовал кастомные типы записей и сниппеты для уникального гармоничного вывода динамичных данных. Настроил каталог оборудования и разделы.', en: 'Built the site on WordPress with the Kadence theme. Implemented custom post types and snippets for unique balanced dynamic data output. Configured equipment catalog and sections.' },
+    features: { ru: ['Тема Kadence','Кастомные типы записей','Сниппеты для вывода данных','Каталог оборудования','Адаптив и оптимизация'], en: ['Kadence theme','Custom post types','Data output snippets','Equipment catalog','Responsive and optimized'] },
+    stack: ['WordPress','Kadence','PHP','CPT','MySQL'],
+    stats: [{ v: 'Corporate', l: { ru: 'Тип', en: 'Type' } },{ v: 'CPT', l: { ru: 'Кастом', en: 'Custom' } },{ v: 'Kadence', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+  waveride: {
+    img: './assets/cases/WAWE.png', type: 'shop',
+    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
+    title: { ru: 'Wave Ride — вода и небо', en: 'Wave Ride — water and sky gear' },
+    url: 'https://waveride.ru/', urlLabel: 'waveride.ru',
+    task: { ru: 'Магазин снаряжения от дайвинга до парашютного спорта: гидрокостюмы, ласты, купола, страхующие системы, экшн-камеры. Всё для стихии в одном месте.', en: 'Gear store from diving to skydiving: wetsuits, fins, canopies, safety systems, action cameras. Everything for your element in one place.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce с кастомным дизайном. Настроил каталог по категориям снаряжения, корзину, оформление заказа и адаптивную вёрстку.', en: 'Built the store on WordPress + WooCommerce with custom design. Configured the catalog by gear categories, cart, checkout and responsive markup.' },
+    features: { ru: ['Кастомный дизайн','Каталог по категориям снаряжения','WooCommerce корзина и оформление','Адаптивная вёрстка'], en: ['Custom design','Catalog by gear categories','WooCommerce cart and checkout','Responsive markup'] },
+    stack: ['WordPress','WooCommerce','Custom Design','HTML/CSS/jQuery'],
+    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Custom', l: { ru: 'Дизайн', en: 'Design' } },{ v: 'Woo', l: { ru: 'Плагин', en: 'Plugin' } }]
+  },
+  lodkipro: {
+    img: './assets/cases/onego.png', type: 'catalog',
+    typeLabel: { ru: 'Каталог', en: 'Catalog' },
+    title: { ru: 'ОНЕГО — охота и рыбалка', en: 'ONEGO — hunting and fishing' },
+    url: 'https://lodkipro.ru/', urlLabel: 'lodkipro.ru',
+    task: { ru: 'Крупный магазин снаряжения для охоты и рыбалки. Много страниц, квиз, сложные фильтры, слайдеры, личный кабинет. Требовалась серьёзная оптимизация.', en: 'Large hunting and fishing gear store. Many pages, quiz, complex filters, sliders, user account. Required serious optimization.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce + ACF Pro на базе пустой темы. Очень объёмный сайт с множеством страниц. Много блоков взял с holod-365.ru и переписал под новый дизайн. Реализовал квиз, сложные фильтры, слайдеры, личный кабинет. Всё оптимизировано по производительности и удобно редактируется из админки.', en: 'Built the store on WordPress + WooCommerce + ACF Pro on a blank theme. Very large site with many pages. Reused many blocks from holod-365.ru and rewrote them for the new design. Implemented quiz, complex filters, sliders, user account. Everything optimized for performance and easily editable from admin.' },
+    features: { ru: ['Пустая тема + ACF Pro','Много страниц и кастомных блоков','Сложные фильтры и квиз','Слайдеры и личный кабинет','Реюз блоков с holod-365.ru под новый дизайн','Серьёзная оптимизация производительности','Редактирование всех текстов из админки'], en: ['Blank theme + ACF Pro','Many pages and custom blocks','Complex filters and quiz','Sliders and user account','Blocks reused from holod-365.ru for new design','Serious performance optimization','All texts editable from admin'] },
+    stack: ['WordPress','WooCommerce','ACF Pro','PHP','MySQL','jQuery'],
+    stats: [{ v: 'Catalog', l: { ru: 'Тип', en: 'Type' } },{ v: 'Very large', l: { ru: 'Объём', en: 'Size' } },{ v: 'Optimized', l: { ru: 'Перф', en: 'Perf' } }]
+  },
+  dryingtech: {
+    img: './assets/cases/drysystem.png', type: 'corporate',
+    typeLabel: { ru: 'Корпоративный', en: 'Corporate' },
+    title: { ru: 'Industrial Heat & Dry Systems', en: 'Industrial Heat & Dry Systems' },
+    url: 'https://dryingtech.ru/', urlLabel: 'dryingtech.ru',
+    task: { ru: 'Промышленный сайт производителя сушильных камер и обогревателей для деревообработки, строительства, логистики и промышленности. С 2010 года на рынке.', en: 'Industrial website for a manufacturer of drying chambers and heaters for woodworking, construction, logistics and industry. On the market since 2010.' },
+    solution: { ru: 'Собрал сайт на WordPress с темой Kadence. Разработал кастомные блоки через сниппеты, переработал шаблоны WP, добавил попапы и заявки. Вёрстка HTML/CSS поверх темы.', en: 'Built the site on WordPress with the Kadence theme. Developed custom blocks via snippets, reworked WP templates, added popups and lead forms. HTML/CSS markup on top of the theme.' },
+    features: { ru: ['Тема Kadence','Кастомные блоки через сниппеты','Переработанные шаблоны WP','Попапы и заявки','Вёрстка HTML/CSS'], en: ['Kadence theme','Custom blocks via snippets','Reworked WP templates','Popups and lead forms','HTML/CSS markup'] },
+    stack: ['WordPress','Kadence','PHP','HTML/CSS','Snippets'],
+    stats: [{ v: 'Corporate', l: { ru: 'Тип', en: 'Type' } },{ v: 'Industrial', l: { ru: 'Отрасль', en: 'Industry' } },{ v: 'Kadence', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+  holod365: {
+    img: './assets/cases/new_holod.png', type: 'catalog',
+    typeLabel: { ru: 'Каталог', en: 'Catalog' },
+    title: { ru: 'Holod-365 — холодильное оборудование', en: 'Holod-365 — refrigeration equipment' },
+    url: 'https://holod-365.ru/', urlLabel: 'holod-365.ru',
+    task: { ru: 'Объёмный магазин холодильного оборудования. Нужны: много страниц, сложный квиз, фильтры, слайдеры, выбор города, дополнительные поля для WooCommerce. Все тексты должны редактироваться из админки.', en: 'Large refrigeration equipment store. Required: many pages, complex quiz, filters, sliders, city selector, extra WooCommerce fields. All texts editable from admin.' },
+    solution: { ru: 'Собрал магазин на WordPress + WooCommerce + ACF Pro на базе пустой темы. Очень объёмный сайт. Реализовал сложную систему квиза, фильтры, слайдеры, выбор города, доп. поля для WooCommerce. Всё оптимизировано по производительности, тексты редактируются из админки.', en: 'Built the store on WordPress + WooCommerce + ACF Pro on a blank theme. Very large site. Implemented a complex quiz system, filters, sliders, city selector, extra WooCommerce fields. Everything optimized for performance, texts editable from admin.' },
+    features: { ru: ['Пустая тема + ACF Pro','Очень объёмный сайт с множеством страниц','Сложная система квиза','Фильтры и слайдеры','Выбор города и доп. поля WooCommerce','Все тексты редактируются из админки','Оптимизированная производительность'], en: ['Blank theme + ACF Pro','Very large site with many pages','Complex quiz system','Filters and sliders','City selector and extra WooCommerce fields','All texts editable from admin','Optimized performance'] },
+    stack: ['WordPress','WooCommerce','ACF Pro','PHP','MySQL','jQuery'],
+    stats: [{ v: 'Catalog', l: { ru: 'Тип', en: 'Type' } },{ v: 'Very large', l: { ru: 'Объём', en: 'Size' } },{ v: 'Quiz', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  frostum: {
+    img: './assets/cases/old_holod.png', type: 'corporate',
+    typeLabel: { ru: 'Корпоративный', en: 'Corporate' },
+    title: { ru: 'Frostum — промышленный холод', en: 'Frostum — industrial cold' },
+    url: 'https://frostum.ru/', urlLabel: 'frostum.ru',
+    task: { ru: 'Продажа холодильного оборудования напрямую от производителей. Проектирование, поставка и обслуживание холодильных систем по всей России. Снижение энергозатрат до 30%.', en: 'Refrigeration equipment sales directly from manufacturers. Design, supply and maintenance of refrigeration systems across Russia. Reducing energy costs by up to 30%.' },
+    solution: { ru: 'Собрал сайт на WordPress с темой Kadence. Разработал кастомные блоки через сниппеты, переработал шаблоны WP, добавил попапы и заявки. Вёрстка HTML/CSS поверх темы.', en: 'Built the site on WordPress with the Kadence theme. Developed custom blocks via snippets, reworked WP templates, added popups and lead forms. HTML/CSS markup on top of the theme.' },
+    features: { ru: ['Тема Kadence','Кастомные блоки через сниппеты','Переработанные шаблоны WP','Попапы и заявки','Вёрстка HTML/CSS'], en: ['Kadence theme','Custom blocks via snippets','Reworked WP templates','Popups and lead forms','HTML/CSS markup'] },
+    stack: ['WordPress','Kadence','PHP','HTML/CSS','Snippets'],
+    stats: [{ v: 'Corporate', l: { ru: 'Тип', en: 'Type' } },{ v: 'Industrial', l: { ru: 'Отрасль', en: 'Industry' } },{ v: 'Kadence', l: { ru: 'Тема', en: 'Theme' } }]
+  },
+
+  /* ========== AI SERVICES ========== */
+  vox2text: {
+    img: './assets/cases/vox2.png', type: 'ai',
+    typeLabel: { ru: 'AI-сервис', en: 'AI service' },
+    title: { ru: 'Vox2Text — расшифровка аудио в текст', en: 'Vox2Text — audio to text transcription' },
+    url: 'https://vox2text.ru/', urlLabel: 'vox2text.ru',
+    task: { ru: 'Нужен SaaS-сервис для расшифровки аудио и видео в текст с подписками, оплатой и локальной моделью без зависимости от внешних API. Архитектура должна быть распределённой для отказоустойчивости.', en: 'Needed a SaaS service for transcribing audio and video to text with subscriptions, payments and a local model without external API dependency. The architecture had to be distributed for fault tolerance.' },
+    solution: { ru: 'Спроектировал и развернул распределённую систему из трёх серверов. Фронт на Flask + HTML/CSS работает на одном сервере, FastAPI-бэк — на втором, MongoDB — на третьем. Модель для расшифровки — OpenAI Whisper Turbo — развёрнута локально в Docker-контейнере. Подключил подписки через YooKassa. Всё общается между собой по API и внутренней сети.', en: 'Designed and deployed a distributed three-server system. Flask + HTML/CSS frontend runs on one server, FastAPI backend on the second, MongoDB on the third. The transcription model — OpenAI Whisper Turbo — is deployed locally in a Docker container. Connected subscriptions via YooKassa. Everything communicates via API and internal network.' },
+    features: { ru: ['Flask-фронт + HTML/CSS','FastAPI-бэк на отдельном сервере','MongoDB на третьем сервере','Локальная модель OpenAI Whisper Turbo в Docker','Подписки и оплата через YooKassa','Распределённая архитектура по 3 серверам','Общение сервисов по API','Очереди и прогресс расшифровки','История расшифровок и скачивание в разных форматах'], en: ['Flask frontend + HTML/CSS','FastAPI backend on a separate server','MongoDB on the third server','Local OpenAI Whisper Turbo model in Docker','Subscriptions and payments via YooKassa','Distributed architecture across 3 servers','Service communication via API','Queues and transcription progress','Transcription history and downloads in multiple formats'] },
+    stack: ['Flask','FastAPI','Whisper Turbo','Docker','MongoDB','YooKassa','HTML/CSS','Nginx'],
+    stats: [{ v: '3 servers', l: { ru: 'Серверы', en: 'Servers' } },{ v: 'Whisper', l: { ru: 'Модель', en: 'Model' } },{ v: 'YooKassa', l: { ru: 'Оплата', en: 'Payments' } }]
+  },
+  whisper_api: {
+    img: './assets/cases/whisper_api.png', type: 'ai',
+    typeLabel: { ru: 'Микросервис', en: 'Microservice' },
+    title: { ru: 'Whisper Turbo — FastAPI микросервис', en: 'Whisper Turbo — FastAPI microservice' },
+    url: '', urlLabel: '',
+    task: { ru: 'Нужен отдельный микросервис для расшифровки аудио, который можно переиспользовать в разных проектах — сайтах, ботах, внутренних сервисах. Модель должна работать локально без внешних API.', en: 'Needed a standalone microservice for audio transcription that can be reused across projects — sites, bots, internal services. The model had to work locally without external APIs.' },
+    solution: { ru: 'Разработал FastAPI-микросервис с локальной моделью OpenAI Whisper Turbo, загруженной через HuggingFace. Упаковал всё в Docker-контейнер. Сервис принимает аудио/видео и возвращает расшифровку в разных форматах. К нему подключаются и сайт Vox2Text, и Telegram-бот — все общаются с ним по REST API.', en: 'Developed a FastAPI microservice with a local OpenAI Whisper Turbo model loaded via HuggingFace. Packaged everything into a Docker container. The service accepts audio/video and returns transcription in multiple formats. Both the Vox2Text site and the Telegram bot connect to it — all communicating via REST API.' },
+    features: { ru: ['FastAPI + Python','Локальная модель OpenAI Whisper Turbo','Загрузка модели через HuggingFace','Docker-контейнер','REST API для интеграции','Поддержка всех популярных аудио и видео форматов','Возврат результата в txt, docx, srt, vtt','Прогресс расшифровки через webhook/callback'], en: ['FastAPI + Python','Local OpenAI Whisper Turbo model','Model loaded via HuggingFace','Docker container','REST API for integration','Support for all popular audio and video formats','Results returned as txt, docx, srt, vtt','Transcription progress via webhook/callback'] },
+    stack: ['FastAPI','Python','Whisper Turbo','HuggingFace','Docker','REST API'],
+    stats: [{ v: 'FastAPI', l: { ru: 'Фреймворк', en: 'Framework' } },{ v: 'Local', l: { ru: 'Модель', en: 'Model' } },{ v: 'Docker', l: { ru: 'Упаковка', en: 'Packaging' } }]
+  },
+  kartinobot: {
+    img: './assets/cases/kartinobot.png', type: 'ai',
+    typeLabel: { ru: 'AI-сервис', en: 'AI service' },
+    title: { ru: 'KartinoBot — генерация изображений', en: 'KartinoBot — image generation' },
+    url: 'https://kartinobot.ru/', urlLabel: 'kartinobot.ru',
+    task: { ru: 'Сервис генерации изображений с монетизацией: подписки, тарифные планы, счёт токенов, оплата за токены, бесплатные попытки для новых пользователей.', en: 'Image generation service with monetization: subscriptions, pricing plans, token counter, pay-per-token, free tries for new users.' },
+    solution: { ru: 'Разработал веб-сервис на Flask + HTML/CSS. Интегрировал together.ai по API OpenAI — генерация изображений идёт через их API. Реализовал систему счёта токенов: каждый запрос списывает токены, пользователь может купить пакет или оформить подписку через YooKassa. Настроил тарифные планы и бесплатные попытки для регистрации.', en: 'Developed a web service on Flask + HTML/CSS. Integrated together.ai via OpenAI API — image generation goes through their API. Implemented a token counting system: each request deducts tokens, the user can buy a package or subscribe via YooKassa. Configured pricing plans and free tries for registration.' },
+    features: { ru: ['Flask + HTML/CSS интерфейс','Интеграция together.ai по API OpenAI','Счёт токенов и списание за генерацию','Оплата за токены через YooKassa','Подписки и тарифные планы','Бесплатные попытки для новых пользователей','История генераций и скачивание результата','Очереди запросов при высокой нагрузке'], en: ['Flask + HTML/CSS interface','together.ai integration via OpenAI API','Token counter and deduction per generation','Pay-per-token via YooKassa','Subscriptions and pricing plans','Free tries for new users','Generation history and result downloads','Request queues under high load'] },
+    stack: ['Flask','HTML/CSS','together.ai','OpenAI API','YooKassa','MySQL','Nginx'],
+    stats: [{ v: 'Flask', l: { ru: 'Стек', en: 'Stack' } },{ v: 'together.ai', l: { ru: 'Провайдер', en: 'Provider' } },{ v: 'Tokens', l: { ru: 'Монетизация', en: 'Monetization' } }]
+  },
+  gpt4chats: {
+    img: './assets/cases/gpt4c.png', type: 'ai',
+    typeLabel: { ru: 'AI-сервис', en: 'AI service' },
+    title: { ru: 'GPT4Chats — мульти-LLM платформа', en: 'GPT4Chats — multi-LLM platform' },
+    url: 'https://gpt4chats.ru/', urlLabel: 'gpt4chats.ru',
+    task: { ru: 'Платформа с доступом к множеству LLM. Требования: отказоустойчивость (если провайдер умирает — используется другой), работа с reasoning-моделями, приём картинок и файлов, уникальные стили общения под каждого пользователя.', en: 'Platform with access to multiple LLMs. Requirements: fault tolerance (if a provider dies — another is used), reasoning model support, image and file handling, unique communication styles per user.' },
+    solution: { ru: 'Собрал платформу на React + Django. Фронт на одном сервере, бэк на другом, работают между собой по API. Реализовал плагины под Django для управления моделями. Настроил fallback между провайдерами: если один LLM недоступен, система автоматически переключается на резервный. Добавил поддержку reasoning-моделей (с цепочкой размышлений), передачу картинок и файлов в модели, уникальные настройки стиля общения для каждого пользователя.', en: 'Built the platform on React + Django. Frontend on one server, backend on another, communicating via API. Implemented Django plugins for model management. Configured fallback between providers: if one LLM is unavailable, the system automatically switches to a backup. Added support for reasoning models (with a chain of thought), image and file transfer to models, unique communication style settings per user.' },
+    features: { ru: ['React-фронт и Django-бэк на разных серверах','Общение между фронтом и бэком по API','Плагины под Django для управления моделями','Fallback между провайдерами LLM','Поддержка reasoning-моделей (цепочка размышлений)','Передача изображений и файлов в модели','Уникальные стили общения под каждого пользователя','Динамическая подгрузка доступных моделей','История чатов и удобный интерфейс','Система тарифов и лимитов'], en: ['React frontend and Django backend on separate servers','Frontend-backend communication via API','Django plugins for model management','Fallback between LLM providers','Reasoning model support (chain of thought)','Image and file transfer to models','Unique communication styles per user','Dynamic loading of available models','Chat history and convenient interface','Tariff and limits system'] },
+    stack: ['React','Django','Django REST','Python','OpenAI API','Claude API','DeepSeek API','Nginx','PostgreSQL'],
+    stats: [{ v: 'React + Django', l: { ru: 'Стек', en: 'Stack' } },{ v: '2 servers', l: { ru: 'Серверы', en: 'Servers' } },{ v: 'Fallback', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  chibik: {
+    img: './assets/cases/chibick.png', type: 'ai',
+    typeLabel: { ru: 'AI-сервис', en: 'AI service' },
+    title: { ru: 'Chibik — генерация студенческих работ', en: 'Chibik — student paper generation' },
+    url: 'https://chibik.ru/', urlLabel: 'chibik.ru',
+    task: { ru: 'Сервис генерации студенческих работ (рефераты, курсовые, дипломы и др.) с сохранением в Word в нужном формате. Всё должно настраиваться в админке: типы работ, промпты, выбор нейросеток, стили отображения, гиперссылки.', en: 'Student paper generation service (essays, coursework, theses, etc.) with Word export in required format. Everything must be configurable in admin: paper types, prompts, model choice, display styles, hyperlinks.' },
+    solution: { ru: 'Разработал веб-сервис на Flask + HTML/CSS. Реализовал систему разных типов работ. Настроил генерацию с сохранением в Word в правильном формате (шрифты, отступы, оформление по ГОСТ). Собрал расширенную админку: добавление/удаление типов работ, редактор промптов, выбор нейросетки для каждой задачи, настройки отображения, управление гиперссылками и прочим.', en: 'Developed a web service on Flask + HTML/CSS. Implemented a system of various paper types. Configured generation with Word export in the correct format (fonts, indents, GOST formatting). Built an extended admin panel: add/remove paper types, prompt editor, model selection per task, display settings, hyperlink management and more.' },
+    features: { ru: ['Flask + HTML/CSS','Разные типы работ (реферат, курсовая, диплом и др.)','Сохранение в Word в нужном формате','Расширенная админка','Добавление/удаление типов работ','Редактор промптов для каждой задачи','Выбор нейросетки для конкретной генерации','Настройки отображения и гиперссылок','Управление пользователями и генерациями'], en: ['Flask + HTML/CSS','Multiple paper types (essay, coursework, thesis, etc.)','Word export in required format','Extended admin panel','Add/remove paper types','Prompt editor for each task','Model selection for each generation','Display and hyperlink settings','User and generation management'] },
+    stack: ['Flask','Python','HTML/CSS','OpenAI API','python-docx','MySQL','Admin Panel'],
+    stats: [{ v: 'Flask', l: { ru: 'Стек', en: 'Stack' } },{ v: 'Word', l: { ru: 'Экспорт', en: 'Export' } },{ v: 'Admin', l: { ru: 'Админка', en: 'Admin' } }]
+  },
+
+  /* ========== TELEGRAM BOTS ========== */
+  vox2bot: {
+    img: './assets/cases/vox2_bot.png', type: 'bot',
+    typeLabel: { ru: 'Telegram-бот', en: 'Telegram bot' },
+    title: { ru: '@vox2text_ru_bot — расшифровка в Telegram', en: '@vox2text_ru_bot — transcribe in Telegram' },
+    url: 'https://t.me/vox2text_ru_bot', urlLabel: '@vox2text_ru_bot',
+    task: { ru: 'Нужен Telegram-бот с функционалом Vox2Text: расшифровка аудио и видео, прогресс, история, скачивание в удобном формате, подписки. Бот должен использовать ту же локальную модель расшифровки, что и сайт.', en: 'Needed a Telegram bot with Vox2Text functionality: audio and video transcription, progress, history, downloads in convenient formats, subscriptions. The bot had to use the same local transcription model as the site.' },
+    solution: { ru: 'Разработал Telegram-бота на aiogram. Связал его с Docker-контейнером расшифровки через виртуальную локальную сеть — бот общается с микросервисом Whisper Turbo напрямую, без выхода во внешнюю сеть. Реализовал прогресс расшифровки, историю, скачивание файлов в удобных форматах, систему подписок.', en: 'Developed a Telegram bot with aiogram. Connected it to the transcription Docker container via a virtual local network — the bot communicates with the Whisper Turbo microservice directly, without going to the external network. Implemented transcription progress, history, downloads in convenient formats, subscriptions.' },
+    features: { ru: ['aiogram, полноценный интерфейс бота','Связь с Docker-контейнером через виртуальную локальную сеть','Прямое общение с микросервисом Whisper Turbo','Прогресс расшифровки в реальном времени','История всех расшифровок пользователя','Скачивание в удобных форматах (txt, docx, srt, vtt)','Система подписок и лимитов'], en: ['aiogram, full bot interface','Connection to Docker container via virtual local network','Direct communication with Whisper Turbo microservice','Real-time transcription progress','Full transcription history for the user','Downloads in convenient formats (txt, docx, srt, vtt)','Subscription and limits system'] },
+    stack: ['aiogram','Python','Whisper Turbo','Docker','VLAN','FastAPI','MongoDB'],
+    stats: [{ v: 'aiogram', l: { ru: 'Фреймворк', en: 'Framework' } },{ v: 'VLAN', l: { ru: 'Связь', en: 'Network' } },{ v: 'Real-time', l: { ru: 'Прогресс', en: 'Progress' } }]
+  },
+  realpix: {
+    img: './assets/cases/realpix_bot.png', type: 'bot',
+    typeLabel: { ru: 'Telegram-бот', en: 'Telegram bot' },
+    title: { ru: '@realpix_bot — генерация картинок в TG', en: '@realpix_bot — image generation in TG' },
+    url: 'https://t.me/realpix_bot', urlLabel: '@realpix_bot',
+    task: { ru: 'Telegram-бот с функционалом KartinoBot: генерация изображений, подписки, счёт токенов, оплата за токены, тарифные планы и бесплатные попытки.', en: 'Telegram bot with KartinoBot functionality: image generation, subscriptions, token counter, pay-per-token, pricing plans and free tries.' },
+    solution: { ru: 'Разработал Telegram-бота на aiogram, повторив функционал сайта KartinoBot. Бот использует together.ai через API OpenAI. Реализовал подписки, счёт токенов, тарифные планы, бесплатные попытки и оплату через YooKassa прямо в боте.', en: 'Developed a Telegram bot with aiogram, replicating KartinoBot functionality. The bot uses together.ai via OpenAI API. Implemented subscriptions, token counter, pricing plans, free tries and YooKassa payments directly in the bot.' },
+    features: { ru: ['aiogram, полный интерфейс бота','Интеграция together.ai по API OpenAI','Счёт токенов прямо в боте','Подписки и тарифные планы','Оплата через YooKassa в интерфейсе бота','Бесплатные попытки для новых пользователей','История генераций','Быстрые инлайн-кнопки и удобная навигация'], en: ['aiogram, full bot interface','together.ai integration via OpenAI API','Token counter directly in the bot','Subscriptions and pricing plans','YooKassa payment in the bot interface','Free tries for new users','Generation history','Fast inline buttons and convenient navigation'] },
+    stack: ['aiogram','Python','together.ai','OpenAI API','YooKassa','MySQL'],
+    stats: [{ v: 'aiogram', l: { ru: 'Фреймворк', en: 'Framework' } },{ v: 'together.ai', l: { ru: 'Провайдер', en: 'Provider' } },{ v: 'Tokens', l: { ru: 'Монетизация', en: 'Monetization' } }]
+  },
+  freegpt: {
+    img: './assets/cases/freegpt_bot.png', type: 'bot',
+    typeLabel: { ru: 'Telegram-бот', en: 'Telegram bot' },
+    title: { ru: '@freegpt_all_bot — мульти-LLM в Telegram', en: '@freegpt_all_bot — multi-LLM in Telegram' },
+    url: 'https://t.me/freegpt_all_bot', urlLabel: '@freegpt_all_bot',
+    task: { ru: 'Telegram-бот с функционалом GPT4Chats: доступ к множеству LLM, работа с reasoning-моделями, приём картинок и файлов, уникальные стили общения.', en: 'Telegram bot with GPT4Chats functionality: access to multiple LLMs, reasoning model support, image and file handling, unique communication styles.' },
+    solution: { ru: 'Разработал Telegram-бота на aiogram, повторяющего функционал GPT4Chats. Все LLM подгружаются динамически — список моделей формируется в реальном времени, fallback между провайдерами сохраняется. Реализовал приём файлов и изображений, поддержку reasoning-моделей, уникальные стили общения, историю чатов.', en: 'Developed a Telegram bot with aiogram replicating GPT4Chats functionality. All LLMs are loaded dynamically — the model list is generated in real time, provider fallback is preserved. Implemented file and image handling, reasoning model support, unique communication styles, chat history.' },
+    features: { ru: ['aiogram, полный интерфейс бота','Динамическая подгрузка списка LLM','Fallback между провайдерами','Поддержка reasoning-моделей','Приём изображений и файлов','Уникальные стили общения','История чатов','Быстрый доступ к популярным моделям'], en: ['aiogram, full bot interface','Dynamic LLM list loading','Fallback between providers','Reasoning model support','Image and file handling','Unique communication styles','Chat history','Fast access to popular models'] },
+    stack: ['aiogram','Python','OpenAI API','Claude API','DeepSeek API','PostgreSQL'],
+    stats: [{ v: 'aiogram', l: { ru: 'Фреймворк', en: 'Framework' } },{ v: 'Dynamic', l: { ru: 'Модели', en: 'Models' } },{ v: 'Fallback', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  purchasebot: {
+    img: './assets/cases/purchase_bot.png', type: 'bot',
+    typeLabel: { ru: 'Telegram-бот', en: 'Telegram bot' },
+    title: { ru: 'PurchaseBot — автоматизация продаж на Playerok', en: 'PurchaseBot — Playerok sales automation' },
+    url: '', urlLabel: '',
+    task: { ru: 'Бот для автоматизации процесса после покупки на маркетплейсе Playerok: после оплаты покупателем товара бот должен собрать данные, провести пошаговый диалог и подтвердить заказ.', en: 'Bot for automating the post-purchase process on the Playerok marketplace: after the buyer pays for an item, the bot must collect data, guide through a step-by-step dialog and confirm the order.' },
+    solution: { ru: 'Разработал Telegram-бота на базе собственной библиотеки PlayerokAPI. Бот слушает события маркетплейса через EventListener, при новой сделке создаёт сессию в SQLite и ведёт пользователя по цепочке: credentials → список игр → код подтверждения. Реализовал дедупликацию сообщений, retry с backoff при 429, ветвления по типу авторизации и mock-сервер для тестирования.', en: 'Developed a Telegram bot based on my own PlayerokAPI library. The bot listens to marketplace events via EventListener, creates a session in SQLite on a new deal and guides the user through a chain: credentials → games list → confirmation code. Implemented message deduplication, retry with backoff on 429, auth-type branches and a mock server for testing.' },
+    features: { ru: ['Собственная библиотека PlayerokAPI','EventListener для отслеживания сделок','SQLite для хранения сессий пользователей','Пошаговый диалог: credentials → игры → код','Ветвления по типу авторизации (image/email/simple)','Дедупликация обработанных сообщений','Retry с экспоненциальным backoff при 429','Отправка изображений от сервера','Триггер «купил» для старта сессии','Mock-сервер для тестирования без реального API'], en: ['Custom PlayerokAPI library','EventListener for tracking deals','SQLite for user session storage','Step-by-step dialog: credentials → games → code','Branches by auth type (image/email/simple)','Deduplication of processed messages','Retry with exponential backoff on 429','Server-side image sending','Trigger "bought" to start a session','Mock server for testing without real API'] },
+    stack: ['Python','aiogram','PlayerokAPI','SQLite','Telegram API','asyncio'],
+    stats: [{ v: 'Playerok', l: { ru: 'Платформа', en: 'Platform' } },{ v: 'SQLite', l: { ru: 'Хранилище', en: 'Storage' } },{ v: 'Retry 429', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  leomathbot: {
+    img: './assets/cases/leomathbot.png', type: 'bot',
+    typeLabel: { ru: 'Telegram-бот + панель', en: 'TG bot + panel' },
+    title: { ru: 'LeoMatchBot — панель управления TG-аккаунтами', en: 'LeoMatchBot — TG accounts management panel' },
+    url: '', urlLabel: '',
+    task: { ru: 'Веб-панель для управления пулом Telegram-аккаунтов с автопостингом, автолайкингом и LLM-автоответами. Нужен человеческий автолайк в leomatchbot, эмуляция поведения, гибкая настройка LLM и работа через прокси.', en: 'Web panel for managing a pool of Telegram accounts with auto-posting, auto-liking and LLM auto-replies. Needed human-like auto-liking in leomatchbot, behavior emulation, flexible LLM settings and proxy support.' },
+    solution: { ru: 'Собрал Flask-панель + Telethon workers. Каждый аккаунт работает в отдельном потоке со своим event loop. Реализовал автолайкинг с эмуляцией человека: паузы, приоритет кнопок, обработка лимитов, реакция на верификацию, повторные попытки при одинаковых сообщениях. LLM-автоответы через любой OpenAI-совместимый API со стейт-машиной chat → sell, валидатором ответов и настройками под каждый чат. Прокси через SOCKS5, система лицензий, SQLite с WAL и очередью записи.', en: 'Built a Flask panel + Telethon workers. Each account runs in a separate thread with its own event loop. Implemented auto-liking with human behavior emulation: pauses, button priority, limit handling, verification reaction, retries on duplicate messages. LLM auto-replies via any OpenAI-compatible API with a chat → sell state machine, response validator and per-chat settings. SOCKS5 proxies, license system, SQLite with WAL and write queue.' },
+    features: { ru: ['Flask веб-панель управления','Множество Telegram-аккаунтов одновременно','Автолайкинг в leomatchbot с эмуляцией человека','Обработка лимитов и верификации','LLM-автоответы через OpenAI-совместимый API','Стейт-машина chat → sell','Валидатор ответов LLM','Управление прокси через SOCKS5','Загрузка/скачивание .session файлов','Профиль: аватар, био, юзернейм, галерея','Отправка кружков через ffmpeg','Система лицензий (itsdangerous)','SQLite с WAL и очередью записи','Логирование по каждому аккаунту'], en: ['Flask web management panel','Multiple Telegram accounts at once','Human-like auto-liking in leomatchbot','Limit and verification handling','LLM auto-replies via OpenAI-compatible API','chat → sell state machine','LLM response validator','SOCKS5 proxy management','Upload/download .session files','Profile: avatar, bio, username, gallery','Circle video sending via ffmpeg','License system (itsdangerous)','SQLite with WAL and write queue','Per-account logging'] },
+    stack: ['Python','Flask','Telethon','SQLite','OpenAI API','ffmpeg','itsdangerous','SQLite WAL'],
+    stats: [{ v: 'Multi-account', l: { ru: 'Аккаунты', en: 'Accounts' } },{ v: 'Auto-like', l: { ru: 'Фичи', en: 'Features' } },{ v: 'LLM chat', l: { ru: 'AI', en: 'AI' } }]
+  },
+
+  /* ========== PARSERS / AUTOMATION ========== */
+  parser_tdorion: {
+    img: './assets/cases/parser_tdorion.png', type: 'parser',
+    typeLabel: { ru: 'Парсер', en: 'Scraper' },
+    title: { ru: 'Парсер tdorion.com — сбор каталога в Excel', en: 'tdorion.com scraper — catalog to Excel' },
+    url: '', urlLabel: '',
+    task: { ru: 'Клиенту нужен инструмент для сбора всего каталога оптового поставщика с авторизацией: обход всех категорий, парсинг товаров с характеристиками, изображениями и категориями, наценка и выгрузка в Excel в формате для маркетплейса.', en: 'Client needed a tool to scrape the entire catalog of a wholesale supplier with authorization: traverse all categories, parse products with characteristics, images and categories, apply markup and export to Excel in marketplace format.' },
+    solution: { ru: 'Разработал многопоточный парсер на Python. Авторизация через API сайта, рекурсивный обход дерева категорий с исключением ненужных, сбор ссылок на товары через пагинацию. Данные о товарах извлекаются из встроенного JSON __NEXT_DATA__ — надёжнее, чем парсить HTML. Реализовал retry-механизм, логирование в файл, прогресс-бар tqdm. Фильтр по цене (от 3000 руб.), наценка 4% с округлением до сотен, экспорт в XLSX с динамическими колонками характеристик.', en: 'Developed a multithreaded Python scraper. Authorization via the site API, recursive traversal of the category tree with exclusions, product link collection via pagination. Product data extracted from embedded __NEXT_DATA__ JSON — more reliable than parsing HTML. Implemented retry mechanism, file logging, tqdm progress bar. Price filter (from 3000 RUB), 4% markup with rounding to hundreds, XLSX export with dynamic characteristic columns.' },
+    features: { ru: ['Авторизация через API сайта','Многопоточный обход категорий (ThreadPoolExecutor)','Retry-механизм для сетевых ошибок','Рекурсивный сбор конечных категорий','Парсинг встроенного JSON __NEXT_DATA__','Сбор изображений, характеристик, описаний','Фильтрация по цене (от 3000 руб.)','Наценка 4% с округлением до сотен','Экспорт в Excel с динамическими колонками характеристик','Логирование в файл и консоль','Прогресс-бар tqdm для отслеживания'], en: ['API authorization','Multithreaded category traversal (ThreadPoolExecutor)','Retry mechanism for network errors','Recursive leaf category collection','Parsing embedded JSON __NEXT_DATA__','Collecting images, characteristics, descriptions','Price filter (from 3000 RUB)','4% markup with rounding to hundreds','Excel export with dynamic characteristic columns','File and console logging','tqdm progress bar tracking'] },
+    stack: ['Python','requests','BeautifulSoup','openpyxl','ThreadPoolExecutor','tqdm','logging'],
+    stats: [{ v: 'Multithread', l: { ru: 'Потоки', en: 'Threads' } },{ v: 'Excel', l: { ru: 'Экспорт', en: 'Export' } },{ v: 'Markup 4%', l: { ru: 'Наценка', en: 'Markup' } }]
+  },
+  wc_rewriter: {
+    img: './assets/cases/wc_rewriter.png', type: 'parser',
+    typeLabel: { ru: 'Desktop + LLM', en: 'Desktop + LLM' },
+    title: { ru: 'WooCommerce Rewriter — рерайт товаров через LLM', en: 'WooCommerce Rewriter — product rewrite via LLM' },
+    url: '', urlLabel: '',
+    task: { ru: 'Нужен инструмент для массового рерайта названий и описаний товаров из CSV-экспорта WooCommerce через нейросети. С настраиваемыми промптами, поддержкой множества провайдеров и автоматическим переключением при сбоях.', en: 'Needed a tool for mass rewriting of product names and descriptions from a WooCommerce CSV export via neural networks. With configurable prompts, multi-provider support and automatic failover.' },
+    solution: { ru: 'Собрал PyQt6-приложение с вкладками. Менеджер моделей проверяет работоспособность ключей и моделей при старте, сортирует по типу (бесплатные/платные) и строит комбинации. При вызове LLM система пробует бесплатные комбинации, при сбое — платные. Реализовал кэширование рабочих ключей, редактор промптов под каждый тип контента, удаление think-блоков (для reasoning-моделей), два режима вывода и ETA с прогресс-баром.', en: 'Built a PyQt6 app with tabs. The model manager tests key and model availability at startup, sorts by type (free/paid) and builds combinations. When calling the LLM, the system tries free combinations first, then paid ones on failure. Implemented working key caching, per-content-type prompt editor, think-block removal (for reasoning models), two output modes and ETA with progress bar.' },
+    features: { ru: ['PyQt6 интерфейс с вкладками','Редактор промптов для заголовков, описаний, кратких описаний','Менеджер моделей: Cerebras, Google Gemini, Groq, VseLLM','Автоматическая проверка ключей и моделей','Fallback между провайдерами (бесплатные → платные)','Пользовательское включение/отключение моделей','Обработка CSV-экспорта WooCommerce','Удаление think-блоков из ответов reasoning-моделей','Два режима вывода: все поля / только описания','Прогресс-бар, ETA, лог в реальном времени','Сохранение настроек между сессиями'], en: ['PyQt6 tabbed interface','Prompt editor for titles, descriptions, short descriptions','Model manager: Cerebras, Google Gemini, Groq, VseLLM','Automatic key and model testing','Provider fallback (free → paid)','User enable/disable per model','WooCommerce CSV export processing','Removing think-blocks from reasoning model responses','Two output modes: all fields / descriptions only','Progress bar, ETA, real-time log','Settings persistence between sessions'] },
+    stack: ['Python','PyQt6','OpenAI SDK','requests','CSV','JSON'],
+    stats: [{ v: 'PyQt6', l: { ru: 'GUI', en: 'GUI' } },{ v: '4 providers', l: { ru: 'Провайдеры', en: 'Providers' } },{ v: 'Fallback', l: { ru: 'Фичи', en: 'Features' } }]
+  },
+  checkers: {
+    img: './assets/cases/checkers.png', type: 'parser',
+    typeLabel: { ru: 'Автоматизация', en: 'Automation' },
+    title: { ru: 'Checkers — проверка SMTP/IMAP/FTP с прокси', en: 'Checkers — SMTP/IMAP/FTP checking with proxies' },
+    url: '', urlLabel: '',
+    task: { ru: 'Нужен набор инструментов для массовой проверки валидности почтовых и FTP-доступов из больших баз. С поддержкой SOCKS5 прокси, многопоточностью, автоопределением MX-записей и обходом защит.', en: 'Needed a toolkit for mass validation of mail and FTP credentials from large databases. With SOCKS5 proxy support, multithreading, MX-record autodiscovery and protection bypass.' },
+    solution: { ru: 'Разработал модульные чекеры для SMTP (587/465/25), IMAP (993) и FTP (21). Все поддерживают SOCKS5 прокси с ротацией, автоопределение SMTP-серверов через autoconfig и MX-записи, обработку разных форматов входа, классификацию ошибок (proxy/host/mail/auth), кэширование результатов. Отдельный модуль для домен-резолвера и построения списка SMTP-прокси.', en: 'Developed modular checkers for SMTP (587/465/25), IMAP (993) and FTP (21). All support SOCKS5 proxy rotation, SMTP autodiscovery via autoconfig and MX records, various input formats, error classification (proxy/host/mail/auth) and result caching. Separate module for domain resolver and SMTP proxy list building.' },
+    features: { ru: ['Проверка SMTP (порты 587/465/25)','Проверка IMAP (993)','Проверка FTP (21)','SOCKS5 прокси с ротацией и чёрным списком','Автоопределение SMTP через autoconfig и MX-записи','Многопоточная проверка с ThreadPoolExecutor','Автоопределение кодировки входных файлов (chardet)','Классификация ошибок: proxy/host/mail/auth','Кэширование успешных результатов','Отдельные логи для каждого типа чекера','Фильтрация и дедупликация баз'], en: ['SMTP check (ports 587/465/25)','IMAP check (993)','FTP check (21)','SOCKS5 proxy with rotation and blacklist','SMTP autodiscovery via autoconfig and MX','Multithreaded checking with ThreadPoolExecutor','Input file encoding detection (chardet)','Error classification: proxy/host/mail/auth','Successful results caching','Separate logs per checker type','Database filtering and deduplication'] },
+    stack: ['Python','smtplib','imaplib','ftplib','PySocks','aioimaplib','dnspython','chardet'],
+    stats: [{ v: 'SMTP+IMAP+FTP', l: { ru: 'Протоколы', en: 'Protocols' } },{ v: 'SOCKS5', l: { ru: 'Прокси', en: 'Proxy' } },{ v: 'MX auto', l: { ru: 'Автопоиск', en: 'Discovery' } }]
+  },
+  playerok_api: {
+    img: './assets/cases/playerok_api.png', type: 'parser',
+    typeLabel: { ru: 'API / Библиотека', en: 'API / Library' },
+    title: { ru: 'PlayerokAPI — неофициальный клиент маркетплейса', en: 'PlayerokAPI — unofficial marketplace client' },
+    url: '', urlLabel: '',
+    task: { ru: 'Нужна Python-библиотека для работы с маркетплейсом Playerok.com: полное покрытие GraphQL API, обход CloudFlare, система событий для отслеживания сделок и чатов.', en: 'Needed a Python library for the Playerok.com marketplace: full GraphQL API coverage, CloudFlare bypass, event system for tracking deals and chats.' },
+    solution: { ru: 'Спроектировал библиотеку с полным покрытием GraphQL API Playerok. Авторизация по токену сессии, обход CloudFlare через tls_requests, retry с экспоненциальной задержкой, ротация User-Agent. Реализовал EventListener, который бесконечно слушает события: новые сообщения, сделки, оплату, подтверждения. Все типы данных (Item, ItemDeal, Chat, User, Game, Review, Transaction) описаны через dataclasses с типизацией. Документация на Sphinx + ReadTheDocs.', en: 'Designed a library with full GraphQL API coverage of Playerok. Session token auth, CloudFlare bypass via tls_requests, retry with exponential backoff, User-Agent rotation. Implemented EventListener that continuously listens for events: new messages, deals, payments, confirmations. All data types (Item, ItemDeal, Chat, User, Game, Review, Transaction) described via dataclasses with typing. Documentation on Sphinx + ReadTheDocs.' },
+    features: { ru: ['Полное покрытие GraphQL API Playerok','Авторизация по токену сессии','Обход CloudFlare через tls_requests','Retry-механизм с экспоненциальной задержкой','Ротация User-Agent','Поддержка прокси','EventListener: чаты, сообщения, сделки, отзывы','Все типы данных через dataclasses','Пагинация во всех списках','Документация на Sphinx + ReadTheDocs'], en: ['Full GraphQL API coverage of Playerok','Session token authorization','CloudFlare bypass via tls_requests','Retry with exponential backoff','User-Agent rotation','Proxy support','EventListener: chats, messages, deals, reviews','All data types via dataclasses','Pagination in all lists','Documentation on Sphinx + ReadTheDocs'] },
+    stack: ['Python','tls_requests','GraphQL','Sphinx','dataclasses','typing'],
+    stats: [{ v: 'GraphQL', l: { ru: 'Протокол', en: 'Protocol' } },{ v: 'CloudFlare', l: { ru: 'Обход', en: 'Bypass' } },{ v: 'Events', l: { ru: 'Listener', en: 'Listener' } }]
+  },
+  mail_service: {
+    img: './assets/cases/mail_service.png', type: 'ai',
+    typeLabel: { ru: 'API / Backend', en: 'API / Backend' },
+    title: { ru: 'Mail Service API — почтовый сервис на FastAPI', en: 'Mail Service API — mail service on FastAPI' },
+    url: '', urlLabel: '',
+    task: { ru: 'Нужен REST API для управления почтовыми ящиками: чтение, отправка, папки, вложения, фоновая проверка новых писем с уведомлениями.', en: 'Needed a REST API for managing mailboxes: reading, sending, folders, attachments, background checking of new emails with notifications.' },
+    solution: { ru: 'Спроектировал FastAPI-сервис с MongoDB через Motor (async драйвер), JWT-аутентификацией, шифрованием паролей через Fernet + PBKDF2. IMAP работает через aioimaplib, SMTP — через aiosmtplib. Фоновые задачи APScheduler проверяют новые письма и отправляют уведомления на внешний endpoint. Полная поддержка папок (создание, переименование, удаление, перемещение) и писем (чтение, удаление, перемещение, пометка прочитанным) с синхронизацией между БД и IMAP.', en: 'Designed a FastAPI service with MongoDB via Motor (async driver), JWT authentication, password encryption via Fernet + PBKDF2. IMAP works through aioimaplib, SMTP through aiosmtplib. APScheduler background tasks check new emails and send notifications to an external endpoint. Full support for folders (create, rename, delete, move) and emails (read, delete, move, mark as read) with synchronization between DB and IMAP.' },
+    features: { ru: ['FastAPI + MongoDB через Motor (async)','JWT-аутентификация','Шифрование паролей: Fernet + PBKDF2','IMAP через aioimaplib','SMTP через aiosmtplib','Папки: создание, переименование, удаление, перемещение','Письма: чтение, удаление, перемещение, пометка прочитанным','Вложения с потоковой отдачей (FileResponse)','Фоновая проверка новых писем (APScheduler)','Уведомления по HTTP endpoint','Pydantic-модели и валидация','Синхронизация БД и IMAP','Отправка писем с вложениями до 10 МБ'], en: ['FastAPI + MongoDB via Motor (async)','JWT authentication','Password encryption: Fernet + PBKDF2','IMAP via aioimaplib','SMTP via aiosmtplib','Folders: create, rename, delete, move','Emails: read, delete, move, mark as read','Attachments streamed via FileResponse','Background email checking (APScheduler)','Notifications via HTTP endpoint','Pydantic models and validation','DB and IMAP synchronization','Email sending with attachments up to 10 MB'] },
+    stack: ['FastAPI','MongoDB','Motor','aioimaplib','aiosmtplib','APScheduler','JWT','Fernet','Pydantic','Python'],
+    stats: [{ v: 'FastAPI', l: { ru: 'Стек', en: 'Stack' } },{ v: 'MongoDB', l: { ru: 'БД', en: 'DB' } },{ v: 'JWT + Fernet', l: { ru: 'Безопасность', en: 'Security' } }]
+  },
+  m365_checker: {
+    img: './assets/cases/m365_checker.png', type: 'parser',
+    typeLabel: { ru: 'Автоматизация', en: 'Automation' },
+    title: { ru: 'M365 Checker — проверка Microsoft 365 аккаунтов', en: 'M365 Checker — Microsoft 365 account validator' },
+    url: '', urlLabel: '',
+    task: { ru: 'Нужен инструмент для массовой проверки валидности Microsoft 365 аккаунтов с классификацией по правам (админ / обычный юзер / 2FA / забанен).', en: 'Needed a tool for mass validation of Microsoft 365 accounts with classification by rights (admin / regular user / 2FA / banned).' },
+    solution: { ru: 'Разработал Selenium-скрипт на базе undetected-chromedriver для обхода детекции ботов. Автоматизация входа в admin.microsoft.com с обработкой множества состояний: IDP disambiguation, ProofUp Redirect, Verify your identity, Sign-in blocked, Security Key/Windows Hello, KMSI. Все аккаунты автоматически классифицируются и раскладываются по файлам admin/user/other/bad. Retry-механизм на случай сбоев.', en: 'Developed a Selenium script on undetected-chromedriver to bypass bot detection. Automation of login to admin.microsoft.com with handling of multiple states: IDP disambiguation, ProofUp Redirect, Verify your identity, Sign-in blocked, Security Key/Windows Hello, KMSI. All accounts are automatically classified and sorted into admin/user/other/bad files. Retry mechanism for failures.' },
+    features: { ru: ['undetected-chromedriver для обхода детекции','Автоматизация входа в admin.microsoft.com','Проверка IDP disambiguation','Обработка ProofUp Redirect','Определение Verify your identity','Обработка Security Key / Windows Hello','Детект заблокированных аккаунтов','Классификация: admin / user / other / bad','Retry-механизм на сбоях','Автоматическое логирование всех состояний','Чтение входного файла с разными разделителями (:, ;, |)'], en: ['undetected-chromedriver to bypass detection','admin.microsoft.com login automation','IDP disambiguation check','ProofUp Redirect handling','Verify your identity detection','Security Key / Windows Hello handling','Blocked account detection','Classification: admin / user / other / bad','Retry mechanism on failures','Automatic logging of all states','Reading input file with different separators (:, ;, |)'] },
+    stack: ['Python','undetected-chromedriver','Selenium','webdriver-manager','logging'],
+    stats: [{ v: 'Undetected', l: { ru: 'Антидетект', en: 'Anti-detect' } },{ v: '4 категории', l: { ru: 'Классификация', en: 'Classification' } },{ v: 'Multi-check', l: { ru: 'Проверки', en: 'Checks' } }]
+  }
+};
+
+/* ============ RENDER CASES ============ */
+function renderCases() {
+  const grid = document.getElementById('casesGrid');
+  const L = currentLang;
+  grid.innerHTML = Object.keys(CASES).map((key, i) => {
+    const c = CASES[key];
+    const typeClass = c.type === 'shop' ? 'shop' : c.type === 'catalog' ? 'catalog' : c.type === 'landing' ? 'landing' : c.type === 'ai' ? 'ai' : c.type === 'bot' ? 'bot' : c.type === 'parser' ? 'parser' : '';
+    const urlBlock = c.url ? `<a class="case-card__url" href="${c.url}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()"><i class="fa-solid fa-link"></i>${c.urlLabel}</a>` : '';
+    const delay = Math.min(i % 5, 5);
+    const delayClass = delay > 0 ? ` d${delay}` : '';
+    return `
+      <article class="case-card reveal${delayClass}" data-type="${c.type}" data-case="${key}">
+        <div class="case-card__img"><img src="${c.img}" alt="${c.title[L]}" onerror="this.onerror=null;this.src='${PLACEHOLDER}'"></div>
+        <div class="case-card__body">
+          <div class="case-card__top"><span class="case-card__type ${typeClass}">${c.typeLabel[L]}</span></div>
+          <h3>${c.title[L]}</h3>
+          ${urlBlock}
+          <p class="case-card__desc">${c.solution[L].slice(0, 200)}${c.solution[L].length > 200 ? '…' : ''}</p>
+          <div class="case-card__tags">${c.stack.slice(0,5).map(s => `<span class="case-tag">${s}</span>`).join('')}</div>
+          <div class="case-card__more"><span data-ru="Подробнее" data-en="Details">${L === 'ru' ? 'Подробнее' : 'Details'}</span><i class="fa-solid fa-arrow-right"></i></div>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  // Re-attach click handlers and reveal
+  document.querySelectorAll('.case-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      openModal(card.dataset.case);
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+  });
+  observeReveal();
+  // Apply current filter
+  const activeFilter = document.querySelector('.filter-btn.active');
+  if (activeFilter && activeFilter.dataset.filter !== 'all') {
+    filterCases(activeFilter.dataset.filter);
+  }
+}
 
+/* ============ Cases filter ============ */
+function filterCases(f) {
+  document.querySelectorAll('.case-card').forEach(card => {
+    card.style.display = (f === 'all' || card.dataset.type === f) ? '' : 'none';
+  });
+}
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterCases(btn.dataset.filter);
+  });
+});
+
+/* ============ MODAL ============ */
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
+const modalBody = document.getElementById('modalBody');
+let currentCaseKey = null;
+
+function buildModalContent(c, lang) {
+  const urlBlock = c.url ? `<a class="modal__url" href="${c.url}" target="_blank" rel="noreferrer"><i class="fa-solid fa-link"></i>${c.urlLabel}</a>` : '';
+  const features = c.features[lang].map(f => `<li>${f}</li>`).join('');
+  const stack = c.stack.map(s => `<span>${s}</span>`).join('');
+  const stats = c.stats.map(s => `<div class="modal__stat"><div class="modal__stat-value">${s.v}</div><div class="modal__stat-label">${s.l[lang]}</div></div>`).join('');
+  const labels = lang === 'ru' ? { task: 'Задача', solution: 'Решение', features: 'Что реализовано', stack: 'Стек технологий', stats: 'Ключевые показатели' } : { task: 'Task', solution: 'Solution', features: 'What was implemented', stack: 'Tech stack', stats: 'Key metrics' };
+  return `
+    <span class="modal__type">${c.typeLabel[lang]}</span>
+    <h2 class="modal__title">${c.title[lang]}</h2>
+    ${urlBlock}
+    <div class="modal__section"><h4>${labels.task}</h4><p>${c.task[lang]}</p></div>
+    <div class="modal__section"><h4>${labels.solution}</h4><p>${c.solution[lang]}</p></div>
+    <div class="modal__section"><h4>${labels.features}</h4><ul>${features}</ul></div>
+    <div class="modal__section"><h4>${labels.stack}</h4><div class="modal__stack">${stack}</div></div>
+    <div class="modal__section"><h4>${labels.stats}</h4><div class="modal__stats">${stats}</div></div>
+  `;
+}
+
+function openModal(key) {
+  const c = CASES[key];
+  if (!c) return;
+  currentCaseKey = key;
+  modalImg.src = c.img;
+  modalImg.onerror = function() { this.onerror = null; this.src = PLACEHOLDER; };
+  modalBody.innerHTML = buildModalContent(c, currentLang);
+  modal.classList.add('open');
+  document.body.classList.add('no-scroll');
+}
+
+function closeModal(e) {
+  if (e && e.target && e.target.closest('.modal__window')) return;
+  modal.classList.remove('open');
+  document.body.classList.remove('no-scroll');
+  currentCaseKey = null;
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ============ Init ============ */
+document.getElementById('year').textContent = new Date().getFullYear();
+applyLang(currentLang);
+</script>
 </body>
 </html>
