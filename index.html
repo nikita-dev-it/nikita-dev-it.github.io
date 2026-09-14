@@ -447,6 +447,21 @@ img{max-width:100%;display:block}
           <li data-ru="JWT, шифрование паролей (Fernet, PBKDF2), безопасность" data-en="JWT, password encryption (Fernet, PBKDF2), security">JWT, password encryption (Fernet, PBKDF2), security</li>
         </ul>
       </div>
+
+      <div class="skill-card reveal d2">
+        <div class="skill-card__head">
+          <span class="skill-card__icon"><i class="fa-solid fa-shield-halved"></i></span>
+          <h3 data-ru="Качество и инструменты" data-en="Quality & tools">Quality & tools</h3>
+        </div>
+        <ul class="skill-card__list">
+          <li data-ru="Git, GitHub, GitLab, Bitbucket — контроль версий и code review" data-en="Git, GitHub, GitLab, Bitbucket — version control and code review">Git, GitHub, GitLab, Bitbucket — version control and code review</li>
+          <li data-ru="ООП, SOLID, паттерны проектирования, чистая архитектура" data-en="OOP, SOLID, design patterns, clean architecture">OOP, SOLID, design patterns, clean architecture</li>
+          <li data-ru="Рефакторинг legacy-кода, code review, оптимизация" data-en="Legacy refactoring, code review, optimization">Legacy refactoring, code review, optimization</li>
+          <li data-ru="Тестирование: pytest, unittest, покрытие кода тестами" data-en="Testing: pytest, unittest, code coverage">Testing: pytest, unittest, code coverage</li>
+          <li data-ru="Документация: Swagger / OpenAPI, Sphinx, README" data-en="Documentation: Swagger / OpenAPI, Sphinx, README">Documentation: Swagger / OpenAPI, Sphinx, README</li>
+          <li data-ru="SEO, Yandex Metrica, Google Analytics, Core Web Vitals" data-en="SEO, Yandex Metrica, Google Analytics, Core Web Vitals">SEO, Yandex Metrica, Google Analytics, Core Web Vitals</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -625,8 +640,6 @@ function detectLang() {
   return 'en';
 }
 
-// Автоопределение при каждой новой сессии/вкладке.
-// sessionStorage хранит выбор только внутри текущей сессии, при новой вкладке — заново детект.
 let currentLang = sessionStorage.getItem('lang') || detectLang();
 
 function applyLang(lang) {
@@ -684,27 +697,29 @@ function observeReveal() {
 const PLACEHOLDER = './assets/cases/заглушка.png';
 
 const CASES = {
+  /* ========== WORDPRESS / WEB ========== */
   bitovki: {
-    img: './assets/cases/бытовки.png', type: 'shop',
-    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
-    title: { ru: 'Bitovki Online — продажа топлива', en: 'Bitovki Online — fuel sales' },
+    img: './assets/cases/бытовки.png',
+    type: 'landing',
+    typeLabel: { ru: 'Лендинг + каталог', en: 'Landing + catalog' },
+    title: { ru: 'Bitovki Online — продажа бытовок', en: 'Bitovki Online — mobile home sales' },
     url: 'https://bitovki-online.ru/', urlLabel: 'bitovki-online.ru',
-    task: { ru: 'Интернет-магазин по продаже топлива и бытовок с нестандартной логикой вывода товаров: данные берутся из кастомных полей WooCommerce и БД WordPress, нужны уникальные блоки и слайдеры.', en: 'E-commerce store for fuel and mobile homes with non-standard product output logic: data pulled from WooCommerce custom fields and the WordPress database, requiring unique blocks and sliders.' },
-    solution: { ru: 'Собрал магазин на WordPress + WooCommerce поверх темы Blocksy. Разработал кастомные сниппеты PHP для уникального вывода данных из БД, настроил слайдеры и адаптивные карточки. Все динамические блоки на главной и в каталоге выводятся через собственные шаблоны.', en: 'Built the store on WordPress + WooCommerce on top of the Blocksy theme. Developed custom PHP snippets for unique DB output, configured sliders and responsive cards. All dynamic blocks on the homepage and in the catalog are rendered through custom templates.' },
-    features: { ru: ['Кастомные PHP-сниппеты для вывода данных из БД','Уникальные шаблоны карточек товаров','Слайдеры и адаптивные блоки на главной','Интеграция с WooCommerce и настройка корзины','Оптимизация загрузки страниц каталога'], en: ['Custom PHP snippets for DB data output','Unique product card templates','Sliders and responsive blocks on the homepage','WooCommerce integration and cart setup','Catalog page loading optimization'] },
+    task: { ru: 'Одностраничный лендинг с каталогом по продаже бытовок. Изначально сайт был собран на Tilda. Требовался перенос на WordPress + WooCommerce с полным редизайном под современный стиль.', en: 'Single-page landing with a catalog for mobile home sales. Initially built on Tilda. Required migration to WordPress + WooCommerce with a full redesign in a modern style.' },
+    solution: { ru: 'Перенёс сайт с Tilda на WordPress + WooCommerce и полностью переработал дизайн под современный стиль. Разработал кастомные PHP-сниппеты для нестандартного вывода данных из БД, настроил слайдеры и адаптивные карточки. Все динамические блоки на главной и в каталоге выводятся через собственные шаблоны.', en: 'Migrated the site from Tilda to WordPress + WooCommerce and fully redesigned it in a modern style. Developed custom PHP snippets for non-standard DB output, configured sliders and responsive cards. All dynamic blocks on the homepage and in the catalog are rendered through custom templates.' },
+    features: { ru: ['Перенос сайта с Tilda на WordPress','Полный редизайн под современный стиль','Кастомные PHP-сниппеты для вывода данных из БД','Уникальные шаблоны карточек товаров','Слайдеры и адаптивные блоки на главной','Интеграция с WooCommerce и настройка корзины','Оптимизация загрузки страниц каталога'], en: ['Migration from Tilda to WordPress','Full redesign in a modern style','Custom PHP snippets for DB data output','Unique product card templates','Sliders and responsive blocks on the homepage','WooCommerce integration and cart setup','Catalog page loading optimization'] },
     stack: ['WordPress','WooCommerce','Blocksy','PHP','MySQL','HTML/CSS/jQuery'],
-    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Snippets', l: { ru: 'Кастом', en: 'Custom' } },{ v: 'Blocksy', l: { ru: 'Тема', en: 'Theme' } }]
+    stats: [{ v: 'Tilda → WP', l: { ru: 'Миграция', en: 'Migration' } },{ v: 'Snippets', l: { ru: 'Кастом', en: 'Custom' } },{ v: 'Redesign', l: { ru: 'Дизайн', en: 'Design' } }]
   },
   toplivo: {
-    img: './assets/cases/toplivo.png', type: 'shop',
-    typeLabel: { ru: 'Магазин', en: 'E-commerce' },
-    title: { ru: 'Toplivo Center — продажа бытовок', en: 'Toplivo Center — mobile home sales' },
+    img: './assets/cases/toplivo.png', type: 'landing',
+    typeLabel: { ru: 'Лендинг + каталог', en: 'Landing + catalog' },
+    title: { ru: 'Toplivo Center — продажа топлива', en: 'Toplivo Center — fuel sales' },
     url: 'https://toplivocenter.ru/', urlLabel: 'toplivocenter.ru',
-    task: { ru: 'Магазин бытовок и топлива на WordPress с уникальным выводом товаров из базы и слайдерами на главной.', en: 'WordPress store for mobile homes and fuel with unique product output from the database and homepage sliders.' },
-    solution: { ru: 'Магазин на WordPress + WooCommerce, тема Blocksy. Разработал сниппеты для уникального вывода данных из БД, слайдеры, кастомные блоки главной страницы. Настроил карточки товаров и фильтрацию.', en: 'Store on WordPress + WooCommerce, Blocksy theme. Developed snippets for unique DB output, sliders, custom homepage blocks. Configured product cards and filtering.' },
-    features: { ru: ['Сниппеты для вывода данных из БД','Слайдеры на главной и в карточках','Кастомные блоки главной страницы','Адаптив под мобильные'], en: ['Snippets for DB output','Sliders on homepage and in cards','Custom homepage blocks','Mobile responsive'] },
+    task: { ru: 'Одностраничный лендинг с каталогом по продаже топлива. Изначально сайт был собран на Tilda. Требовался перенос на WordPress + WooCommerce с полным редизайном под современный стиль.', en: 'Single-page landing with a catalog for fuel sales. Initially built on Tilda. Required migration to WordPress + WooCommerce with a full redesign in a modern style.' },
+    solution: { ru: 'Перенёс сайт с Tilda на WordPress + WooCommerce и полностью переработал дизайн под современный стиль. Разработал сниппеты для нестандартного вывода данных из БД, слайдеры и кастомные блоки главной страницы. Настроил карточки товаров и фильтрацию каталога.', en: 'Migrated the site from Tilda to WordPress + WooCommerce and fully redesigned it in a modern style. Developed snippets for non-standard DB output, sliders and custom homepage blocks. Configured product cards and catalog filtering.' },
+    features: { ru: ['Перенос сайта с Tilda на WordPress','Полный редизайн под современный стиль','Сниппеты для вывода данных из БД','Слайдеры на главной и в карточках','Кастомные блоки главной страницы','WooCommerce каталог и корзина','Адаптив под мобильные'], en: ['Migration from Tilda to WordPress','Full redesign in a modern style','Snippets for DB output','Sliders on homepage and in cards','Custom homepage blocks','WooCommerce catalog and cart','Mobile responsive'] },
     stack: ['WordPress','WooCommerce','Blocksy','PHP','MySQL'],
-    stats: [{ v: 'E-commerce', l: { ru: 'Тип', en: 'Type' } },{ v: 'Sliders', l: { ru: 'Фичи', en: 'Features' } },{ v: 'Blocksy', l: { ru: 'Тема', en: 'Theme' } }]
+    stats: [{ v: 'Tilda → WP', l: { ru: 'Миграция', en: 'Migration' } },{ v: 'Sliders', l: { ru: 'Фичи', en: 'Features' } },{ v: 'Redesign', l: { ru: 'Дизайн', en: 'Design' } }]
   },
   motofront: {
     img: './assets/cases/image_2026-09-13_17-06-30.png', type: 'shop',
@@ -839,6 +854,7 @@ const CASES = {
     stats: [{ v: 'Corporate', l: { ru: 'Тип', en: 'Type' } },{ v: 'Industrial', l: { ru: 'Отрасль', en: 'Industry' } },{ v: 'Kadence', l: { ru: 'Тема', en: 'Theme' } }]
   },
 
+  /* ========== AI SERVICES ========== */
   vox2text: {
     img: './assets/cases/vox2.png', type: 'ai',
     typeLabel: { ru: 'AI-сервис', en: 'AI service' },
@@ -895,6 +911,7 @@ const CASES = {
     stats: [{ v: 'Flask', l: { ru: 'Стек', en: 'Stack' } },{ v: 'Word', l: { ru: 'Экспорт', en: 'Export' } },{ v: 'Admin', l: { ru: 'Админка', en: 'Admin' } }]
   },
 
+  /* ========== TELEGRAM BOTS ========== */
   vox2bot: {
     img: './assets/cases/vox2_bot.png', type: 'bot',
     typeLabel: { ru: 'Telegram-бот', en: 'Telegram bot' },
@@ -951,6 +968,7 @@ const CASES = {
     stats: [{ v: 'Multi-account', l: { ru: 'Аккаунты', en: 'Accounts' } },{ v: 'Auto-like', l: { ru: 'Фичи', en: 'Features' } },{ v: 'LLM chat', l: { ru: 'AI', en: 'AI' } }]
   },
 
+  /* ========== PARSERS / AUTOMATION ========== */
   parser_tdorion: {
     img: './assets/cases/parser_tdorion.png', type: 'parser',
     typeLabel: { ru: 'Парсер', en: 'Scraper' },
@@ -1029,9 +1047,6 @@ function renderCases() {
     const urlBlock = c.url ? `<a class="case-card__url" href="${c.url}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()"><i class="fa-solid fa-link"></i>${c.urlLabel}</a>` : '';
     const delay = Math.min(i % 5, 5);
     const delayClass = delay > 0 ? ` d${delay}` : '';
-    const desc = c.solution[L].slice(0, 200) + (c.solution[L].length > 200 ? '…' : '');
-    const tags = c.stack.slice(0,5).map(s => `<span class="case-tag">${s}</span>`).join('');
-    const moreLabel = L === 'ru' ? 'Подробнее' : 'Details';
     return `
       <article class="case-card reveal${delayClass}" data-type="${c.type}" data-case="${key}">
         <div class="case-card__img"><img src="${c.img}" alt="${c.title[L]}" onerror="this.onerror=null;this.src='${PLACEHOLDER}'"></div>
@@ -1039,9 +1054,9 @@ function renderCases() {
           <div class="case-card__top"><span class="case-card__type ${typeClass}">${c.typeLabel[L]}</span></div>
           <h3>${c.title[L]}</h3>
           ${urlBlock}
-          <p class="case-card__desc">${desc}</p>
-          <div class="case-card__tags">${tags}</div>
-          <div class="case-card__more"><span>${moreLabel}</span><i class="fa-solid fa-arrow-right"></i></div>
+          <p class="case-card__desc">${c.solution[L].slice(0, 200)}${c.solution[L].length > 200 ? '…' : ''}</p>
+          <div class="case-card__tags">${c.stack.slice(0,5).map(s => `<span class="case-tag">${s}</span>`).join('')}</div>
+          <div class="case-card__more"><span data-ru="Подробнее" data-en="Details">${L === 'ru' ? 'Подробнее' : 'Details'}</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
       </article>
     `;
@@ -1085,9 +1100,7 @@ function buildModalContent(c, lang) {
   const features = c.features[lang].map(f => `<li>${f}</li>`).join('');
   const stack = c.stack.map(s => `<span>${s}</span>`).join('');
   const stats = c.stats.map(s => `<div class="modal__stat"><div class="modal__stat-value">${s.v}</div><div class="modal__stat-label">${s.l[lang]}</div></div>`).join('');
-  const labels = lang === 'ru'
-    ? { task: 'Задача', solution: 'Решение', features: 'Что реализовано', stack: 'Стек технологий', stats: 'Ключевые показатели' }
-    : { task: 'Task', solution: 'Solution', features: 'What was implemented', stack: 'Tech stack', stats: 'Key metrics' };
+  const labels = lang === 'ru' ? { task: 'Задача', solution: 'Решение', features: 'Что реализовано', stack: 'Стек технологий', stats: 'Ключевые показатели' } : { task: 'Task', solution: 'Solution', features: 'What was implemented', stack: 'Tech stack', stats: 'Key metrics' };
   return `
     <span class="modal__type">${c.typeLabel[lang]}</span>
     <h2 class="modal__title">${c.title[lang]}</h2>
